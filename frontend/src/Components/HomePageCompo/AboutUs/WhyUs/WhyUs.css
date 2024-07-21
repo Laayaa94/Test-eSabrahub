@@ -1,0 +1,119 @@
+.aboutus-whyus-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 60px;
+   
+
+}
+
+.aboutus-whyus-image {
+ flex: 1;
+ display: flex;
+ align-items: center;
+ justify-content: center;
+}
+
+.aboutus-whyus-image img {
+   width: 475px;
+   border-radius: 15px;
+   cursor: pointer;
+}
+
+.aboutus-whyus-image img:hover{
+    box-shadow: 0 4px 8px rgba(21, 20, 20, 0.2), 0 6px 20px rgba(221, 116, 19, 0.5);
+
+}
+.aboutus-whyus-text{
+    display: flex;
+    flex-direction: column;
+    padding: 20px 40px;
+    flex: 1;
+    
+}
+.aboutus-whyus-text-topic{
+    display: flex;
+    align-items: center;
+}
+.aboutus-whyus-text p{
+    color: #747c7c;
+    font-size: 16px;
+    margin:  10px 0;
+}
+.aboutus-whyus-text-topic h1{
+    color: #dd7413;
+    font-weight: 900;
+    font-size: 30px;
+}
+.aboutus-whyus-text-topic span{
+    color: #151414;
+    font-size: 30px;
+    margin-left: 10px;
+    font-weight: 900;
+}
+.list-items-aboutus-whyus{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 5px ;
+}
+.list-items-aboutus-whyus img{
+    width: 35px;
+}
+.list-items-aboutus-whyus p{
+    text-transform: uppercase;
+    color: #151414;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+
+@media(max-width:1024px){
+    .aboutus-whyus-image img{
+        width: 350px;
+    }
+}
+
+@media(max-width:800px){
+    .aboutus-whyus-container{
+        flex-direction: column-reverse;
+        align-items: flex-start;
+    }
+    .aboutus-whyus-text{
+        padding: 0;
+    }
+    .aboutus-whyus-image img{
+        margin-top: 20px;
+        width: 325px;
+    }
+}
+@media(max-width:500px){
+    .aboutus-whyus-image img{
+        width: 300px;
+    }
+    .aboutus-whyus-container{
+        margin: 0 auto;
+    }
+    .aboutus-whyus-text-topic {
+     justify-content: center; 
+    }
+    .aboutus-whyus-image{
+        width: 100%;
+    }
+    .aboutus-whyus-image img {
+        margin: 50px auto 5px;
+    }
+    .aboutus-whyus-text p{
+        font-size: 14px;
+       
+    }
+    .aboutus-whyus-text-topic h1{
+        font-size: 25px;
+    }
+    .aboutus-whyus-text-topic span{
+        font-size: 25px;
+      
+   }
+   
+   
+}

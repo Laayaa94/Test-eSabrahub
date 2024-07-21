@@ -1,0 +1,10 @@
+.aboutUs-container {
+    margin: 40px 60px;
+}
+
+
+@media(max-width:500px){
+    .aboutUs-container{
+        margin: 40px 15px;
+    }
+}

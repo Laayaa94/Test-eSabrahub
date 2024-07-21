@@ -1,0 +1,69 @@
+.hero{
+    
+    background: linear-gradient(to right, #151414 , #dd7513b3), url('../../../Assets/hero-eSabraHub.jpg');
+    height: 100vh;
+    width: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+.leftSide-hero h1{
+    color: #e1ded2;
+}
+
+.leftSide-hero{
+    padding-left: 60px;
+    padding-top: 60px;
+}
+.leftSide-hero p{
+    font-size: 16px;
+    color: #747c7c;
+    
+}
+.leftSide-hero button{
+  background-color: #dd7413;
+  color: white;
+  font-size: 16px;
+  border: none;
+  padding: 10px 40px;
+  cursor: pointer;
+  margin-top: 60px;
+  border-radius: 5px;
+}
+.leftSide-hero button:hover{
+    background-color: #f49335;
+}
+.welcomeText{
+    display: flex;
+    align-items: center;
+}
+.welcomeText h2{
+    font-size: 40px;
+    color: #e1ded2;
+    font-weight: 900;
+}
+.welcomeText  img{
+    width: 60px;
+}
+.dynamic-word {
+    font-weight: 900;
+    font-size: 45px;
+    color: #dd7413; 
+    transition: opacity 0.5s ease-in-out;
+    
+  }
+
+  @media(max-width:500px){
+    .leftSide-hero{
+        padding-left: 20px;
+    }
+    .leftSide-hero p{
+        font-size: 14px;
+    } 
+    .leftSide-hero button{
+        font-size: 14px;
+    }
+    .dynamic-word{
+        font-size: 35px;
+    }
+  }
