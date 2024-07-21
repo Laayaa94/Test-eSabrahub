@@ -1,55 +1,56 @@
-const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
 const User = require('../Models/User');
+const jwt = require('jsonwebtoken');
+const dotenv = require('dotenv');
+dotenv.config();
 
-exports.registerUser = async (req, res) => {
-  const { username, email, password } = req.body;
+// Function to generate a JWT token without expiration
+const generateToken = (userId) => {
+  return jwt.sign({ id: userId }, process.env.JWT_SECRET); // No expiresIn
+};
+
+// Signup Controller
+exports.signup = async (req, res) => {
   try {
-    const userExists = await User.findOne({ email });
-    if (userExists) {
-      return res.status(400).json({ msg: 'User already exists' });
+    const { username, email, password, confirmPassword } = req.body;
+
+    // Check if passwords match
+    if (password !== confirmPassword) {
+      return res.status(400).json({ message: "Passwords don't match" });
     }
 
-    const salt = await bcrypt.genSalt(10);
-    const hashedPassword = await bcrypt.hash(password, salt);
-
-    const user = new User({
-      username,
-      email,
-      password: hashedPassword,
-    });
-
+    // Create a new user
+    const user = new User({ username, email, password });
     await user.save();
 
-    // Generate a JWT without expiration
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    // Generate token
+    const token = generateToken(user._id);
 
-    res.status(201).json({ token });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    // Send response
+    res.status(201).json({ token, user });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };
 
-exports.loginUser = async (req, res) => {
-  const { email, password } = req.body;
+// Login Controller
+exports.login = async (req, res) => {
   try {
+    const { email, password } = req.body;
+
+    // Find user by email
     const user = await User.findOne({ email });
-    if (!user) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
+    if (!user) return res.status(404).json({ message: 'User not found' });
 
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res.status(400).json({ msg: 'Invalid credentials' });
-    }
+    // Check if password matches
+    const isMatch = await user.comparePassword(password);
+    if (!isMatch) return res.status(400).json({ message: 'Invalid credentials' });
 
-    // Generate a JWT without expiration
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+    // Generate token
+    const token = generateToken(user._id);
 
-    res.json({ token });
-  } catch (err) {
-    console.error(err.message);
-    res.status(500).send('Server error');
+    // Send response
+    res.status(200).json({ token, user });
+  } catch (error) {
+    res.status(400).json({ message: error.message });
   }
 };

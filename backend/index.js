@@ -4,8 +4,9 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 dotenv.config();
 const app = express();
-const path = require("path");
+const path = require('path');
 const fs = require('fs');
+const userRoutes = require('./Routes/Auth');
 
 
 // Middleware
@@ -14,6 +15,8 @@ app.use(express.json());
 
 // Apply authentication middleware globally
 
+// User Routes
+app.use('/api/users', userRoutes);
 
 // MongoDB Connection
   mongoose.connect(`mongodb+srv://prabodaharshani95:Mongo94@esabratest.vocqobw.mongodb.net/esabra`, {

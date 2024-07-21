@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
-import './Login.css'
+import { useAuth } from '../../../Context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import './Login.css';
+
 const Login = () => {
   const [isSignup, setIsSignup] = useState(false);
   const [formData, setFormData] = useState({
@@ -8,26 +11,42 @@ const Login = () => {
     password: '',
     confirmPassword: '',
   });
+  const { authState, login, signup } = useAuth();
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    if (isSignup) {
-      if (formData.password !== formData.confirmPassword) {
-        alert("Passwords don't match");
-        return;
+    try {
+      if (isSignup) {
+        if (formData.password !== formData.confirmPassword) {
+          alert("Passwords don't match");
+          return;
+        }
+        await signup(formData.username, formData.email, formData.password, formData.confirmPassword);
+        alert('Signup successful');
+      } else {
+        await login(formData.email, formData.password);
+        alert('Login successful');
       }
-      // Handle signup logic
-      console.log('Signup Data:', formData);
-    } else {
-      // Handle login logic
-      console.log('Login Data:', { email: formData.email, password: formData.password });
+  
+      // Log user details
+      console.log('User:', authState.user);
+      console.log('User Email:', authState.user?.email); // Optional chaining
+      console.log('User ID:', authState.user?.id);
+      console.log('Token:', authState.token);
+  
+      navigate('/posts'); // Redirect to the /posts page after successful login or signup
+      
+    } catch (error) {
+      alert(`Error: ${error.message}`);
     }
   };
+  
 
   return (
     <div className="auth-container">

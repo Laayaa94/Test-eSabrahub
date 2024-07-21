@@ -5,10 +5,12 @@ import './NavBar.css';
 import logo from '../../../Assets/logo-eSabraHub.png';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faNavicon, faTimes } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../../Context/AuthContext'; // Import useAuth
 
 const NavBar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const { authState, logout } = useAuth(); // Get authState and logout function
   const [dropdown, setDropdown] = useState(false);
   const [targetSection, setTargetSection] = useState(null);
   const [sideNavOpen, setSideNavOpen] = useState(false);
@@ -22,7 +24,12 @@ const NavBar = () => {
   };
 
   const handleLoginClick = () => {
-    navigate('/login');
+    if (authState.user) {
+      logout();
+      navigate('/'); // Redirect to homepage after logout
+    } else {
+      navigate('/login');
+    }
   };
 
   const handleServiceClick = (servicePath) => {
@@ -142,17 +149,18 @@ const NavBar = () => {
             <hr />
           </li>
           <li>
-            <button onClick={handleLoginClick}>Login</button>
+            <button onClick={handleLoginClick}>
+              {authState.user ? 'Logout' : 'Login'}
+            </button>
           </li>
-          
         </ul>
      
-       <FontAwesomeIcon icon={faNavicon} className="navbar-icon" onClick={toggleSideNav} />
+        <FontAwesomeIcon icon={faNavicon} className="navbar-icon" onClick={toggleSideNav} />
      
       </nav>
       <div className={`side-navbar ${sideNavOpen ? 'open' : ''}`}>
         <FontAwesomeIcon icon={faTimes} className="close-icon" onClick={toggleSideNav} />
-        <ul >
+        <ul>
           <li onClick={() => handleScrollToSection('heroId')}>Home</li>
           <li onClick={() => handleServiceClick('/accommodation')}>Accommodations</li>
           <li onClick={() => handleServiceClick('/transport')}>Transport</li>
@@ -162,7 +170,9 @@ const NavBar = () => {
           <li onClick={() => handleScrollToSection('aboutId')}>About Us</li>
           <li onClick={() => handleScrollToSection('contactId')}>Contact Us</li>
           <li>
-            <button onClick={handleLoginClick}>Login</button>
+            <button onClick={handleLoginClick}>
+              {authState.user ? 'Logout' : 'Login'}
+            </button>
           </li>
         </ul>
       </div>
