@@ -9,7 +9,7 @@ const CreatePost = () => {
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
   const [location, setLocation] = useState('');
-  const [captions, setCaptions] = useState([]);
+  const [caption, setCaption] = useState(''); // Single caption for media posts
   const [backgroundColor, setBackgroundColor] = useState('#ffffff'); // Default background color
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [postType, setPostType] = useState('text'); // 'text' or 'media'
@@ -21,7 +21,6 @@ const CreatePost = () => {
   const handlePhotoChange = (e) => {
     const files = Array.from(e.target.files);
     setPhotos((prevPhotos) => [...prevPhotos, ...files]);
-    setCaptions((prevCaptions) => [...prevCaptions, ...files.map(() => '')]);
   };
 
   const handleVideoChange = (e) => {
@@ -33,10 +32,8 @@ const CreatePost = () => {
     setLocation(e.target.value);
   };
 
-  const handleCaptionChange = (index, e) => {
-    const newCaptions = [...captions];
-    newCaptions[index] = e.target.value;
-    setCaptions(newCaptions);
+  const handleCaptionChange = (e) => {
+    setCaption(e.target.value);
   };
 
   const handleBackgroundColorChange = (color) => {
@@ -54,7 +51,7 @@ const CreatePost = () => {
     setPhotos([]);
     setVideos([]);
     setLocation('');
-    setCaptions([]);
+    setCaption(''); // Reset caption
   };
 
   const handleSubmit = (e) => {
@@ -65,7 +62,7 @@ const CreatePost = () => {
       photos,
       videos,
       location,
-      captions,
+      caption,
       postType
     });
     // Reset form
@@ -73,7 +70,7 @@ const CreatePost = () => {
     setPhotos([]);
     setVideos([]);
     setLocation('');
-    setCaptions([]);
+    setCaption(''); // Reset caption
     setBackgroundColor('#ffffff'); // Reset background color
   };
 
@@ -83,12 +80,14 @@ const CreatePost = () => {
         <button
           className={`post-type-button ${postType === 'text' ? 'active' : ''}`}
           onClick={() => handlePostTypeChange('text')}
+          style={{ backgroundColor: postType === 'text' ? '#dd7413' : '' }} // Yellow if active
         >
           Text Post
         </button>
         <button
           className={`post-type-button ${postType === 'media' ? 'active' : ''}`}
           onClick={() => handlePostTypeChange('media')}
+          style={{ backgroundColor: postType === 'media' ? '#dd7413' : '' }} // Yellow if active
         >
           Media Post
         </button>
@@ -107,23 +106,35 @@ const CreatePost = () => {
               />
             </div>
 
-            <div className="background-colors">
-              <button type="button" onClick={() => handleBackgroundColorChange('#ffffff')} style={{ backgroundColor: '#ffffff' }}></button>
-              <button type="button" onClick={() => handleBackgroundColorChange('#ffebcd')} style={{ backgroundColor: '#ffebcd' }}></button>
-              <button type="button" onClick={() => handleBackgroundColorChange('#add8e6')} style={{ backgroundColor: '#add8e6' }}></button>
-              <button type="button" onClick={() => handleBackgroundColorChange('#98fb98')} style={{ backgroundColor: '#98fb98' }}></button>
-              <button type="button" onClick={() => handleBackgroundColorChange('#ffe4e1')} style={{ backgroundColor: '#ffe4e1' }}></button>
+            <div className="background-options">
+              <button type="button" className="emoji-button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
+                😊
+              </button>
+              <div className="background-colors">
+                <button type="button" onClick={() => handleBackgroundColorChange('#ffffff')} style={{ backgroundColor: '#ffffff' }}></button>
+                <button type="button" onClick={() => handleBackgroundColorChange('#ffebcd')} style={{ backgroundColor: '#ffebcd' }}></button>
+                <button type="button" onClick={() => handleBackgroundColorChange('#add8e6')} style={{ backgroundColor: '#add8e6' }}></button>
+                <button type="button" onClick={() => handleBackgroundColorChange('#98fb98')} style={{ backgroundColor: '#98fb98' }}></button>
+                <button type="button" onClick={() => handleBackgroundColorChange('#ffe4e1')} style={{ backgroundColor: '#ffe4e1' }}></button>
+                <button type="button" onClick={() => handleBackgroundColorChange('#2c3e50')} style={{ backgroundColor: '#2c3e50' }}></button>
+                <button type="button" onClick={() => handleBackgroundColorChange('#34495e')} style={{ backgroundColor: '#34495e' }}></button>
+              </div>
             </div>
 
-            <button type="button" className="emoji-button" onClick={() => setShowEmojiPicker(!showEmojiPicker)}>
-              😊
-            </button>
-            {showEmojiPicker && <EmojiPicker onEmojiClick={handleEmojiClick} />}
+            {showEmojiPicker && <div className="emoji-picker-container"><EmojiPicker onEmojiClick={handleEmojiClick} /></div>}
           </>
         )}
 
         {postType === 'media' && (
           <>
+            <div className="caption-container">
+              <input
+                type="text"
+                placeholder="Enter Your Text Here..."
+                value={caption}
+                onChange={handleCaptionChange}
+              />
+            </div>
             <div className="media-buttons">
               <label className="media-button">
                 <FontAwesomeIcon icon={faCamera} />
@@ -134,7 +145,7 @@ const CreatePost = () => {
                 <input type="file" multiple accept="video/*" onChange={handleVideoChange} />
               </label>
               <label className="media-button">
-                <FontAwesomeIcon icon={faMapMarkerAlt} />
+                <FontAwesomeIcon icon={faMapMarkerAlt} className='famapmarkeralt'/>
                 <input
                   type="text"
                   placeholder="Location"
@@ -147,12 +158,6 @@ const CreatePost = () => {
             {photos.map((photo, index) => (
               <div key={index} className="photo-preview">
                 <img src={URL.createObjectURL(photo)} alt="Preview" />
-                <input
-                  type="text"
-                  placeholder="Add a caption"
-                  value={captions[index]}
-                  onChange={(e) => handleCaptionChange(index, e)}
-                />
               </div>
             ))}
 
@@ -167,7 +172,7 @@ const CreatePost = () => {
           </>
         )}
 
-        <button type="submit">Post</button>
+        <button type="submit" className='createpost-btn'>Post</button>
       </form>
     </div>
   );
