@@ -1,11 +1,16 @@
 .create-post-nav {
     padding: 5px;
+    position: fixed;
+    top: 49px;
+    width: 100%;
+    z-index: 999;
+    background-color: #fff;
     display: flex;
     justify-content: space-around;
     align-items: center;
-    border-bottom: 1px solid #151414a9;
-  }
-  
+    border-bottom: 1px solid rgba(203, 199, 199, 0.762);
+}
+
   .create-post-nav ul {
     list-style: none;
     margin: 0;

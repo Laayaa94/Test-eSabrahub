@@ -7,6 +7,7 @@ const app = express();
 const path = require('path');
 const fs = require('fs');
 const userRoutes = require('./Routes/Auth');
+const postRoutes=require('./Routes/PostRoutes')
 
 
 // Middleware
@@ -17,6 +18,9 @@ app.use(express.json());
 
 // User Routes
 app.use('/api/users', userRoutes);
+
+//Post Routes
+app.use('/api/',postRoutes)
 
 // MongoDB Connection
   mongoose.connect(`mongodb+srv://prabodaharshani95:Mongo94@esabratest.vocqobw.mongodb.net/esabra`, {
