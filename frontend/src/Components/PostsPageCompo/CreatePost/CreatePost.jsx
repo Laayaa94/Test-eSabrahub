@@ -2,9 +2,12 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCamera, faVideo, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import EmojiPicker from 'emoji-picker-react';
+import { useAuth } from '../../../Context/AuthContext'; // Import the useAuth hook
+import axios from 'axios';
 import './CreatePost.css';
 
 const CreatePost = () => {
+  const { authState } = useAuth(); // Get authState from AuthContext
   const [text, setText] = useState('');
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
@@ -54,25 +57,43 @@ const CreatePost = () => {
     setCaption(''); // Reset caption
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission, e.g., send data to backend
-    console.log({
-      text,
-      photos,
-      videos,
-      location,
-      caption,
-      postType
-    });
-    // Reset form
-    setText('');
-    setPhotos([]);
-    setVideos([]);
-    setLocation('');
-    setCaption(''); // Reset caption
-    setBackgroundColor('#ffffff'); // Reset background color
+  
+    const formData = new FormData();
+    formData.append('text', text);
+    formData.append('location', location);
+    formData.append('caption', caption);
+    formData.append('backgroundColor', backgroundColor);
+    formData.append('postType', postType);
+  
+    photos.forEach(photo => formData.append('photos', photo));
+    videos.forEach(video => formData.append('videos', video));
+  
+    try {
+      const response = await axios.post('http://localhost:5000/api/posts', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${authState.token}`
+        }
+      });
+  
+      console.log('Post created successfully:', response.data);
+      alert('Post created successfully!');
+      // Reset state after successful post creation
+      setText('');
+      setPhotos([]);
+      setVideos([]);
+      setLocation('');
+      setCaption('');
+      setBackgroundColor('#ffffff');
+      setPostType('text');
+    } catch (error) {
+      console.error('Error creating post:', error);
+      alert('Error creating post. Please try again.');
+    }
   };
+  
 
   return (
     <div className="create-post">
@@ -130,7 +151,7 @@ const CreatePost = () => {
             <div className="caption-container">
               <input
                 type="text"
-                placeholder="Enter Your Text Here..."
+                placeholder="Enter Your Caption Here..."
                 value={caption}
                 onChange={handleCaptionChange}
               />

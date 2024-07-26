@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
-const User =require('../Models/User')
+const User = require('../Models/User');
+
 const PostSchema = new mongoose.Schema({
   text: { type: String, required: false },
   photos: { type: [String], required: false },
@@ -7,7 +8,11 @@ const PostSchema = new mongoose.Schema({
   location: { type: String, required: false },
   caption: { type: String, required: false },
   backgroundColor: { type: String, required: false },
-  postType: { type: String, required: true },
+  postType: { 
+    type: String, 
+    enum: ['text', 'media'], // Only allow 'text' or 'media'
+    required: true 
+  },
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
 }, { timestamps: true });
 
