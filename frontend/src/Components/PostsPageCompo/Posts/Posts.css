@@ -11,7 +11,6 @@
     border-radius: 8px;
     margin-bottom: 16px;
     overflow: hidden;
-    background-color: #fff;
   }
   
   .post-header {
@@ -73,7 +72,6 @@
   }
   
   .text-content {
-    background-color: #f0f0f0;
     padding: 12px;
     border-radius: 4px;
   }
@@ -135,4 +133,10 @@
   .likes-count, .comments-count {
     margin-right: 12px;
   }
+  .like-icon {
+    cursor: pointer;
+    color: #c7690c; /* Default color */
+    transition: color 0.3s;
+  }
   
+ 

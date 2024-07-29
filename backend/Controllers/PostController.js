@@ -131,6 +131,37 @@ const deletePost = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+const likePost = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        const userId = req.user._id;
+        
+        const post = await Post.findById(postId);
+
+        if (!post) {
+            return res.status(404).json({ error: 'Post not found' });
+        }
+
+        // Check if the user already liked the post
+        const userLike = post.likes.find(like => like.userId.toString() === userId.toString());
+
+        if (userLike) {
+            // User already liked the post, so we remove the like
+            post.likes = post.likes.filter(like => like.userId.toString() !== userId.toString());
+        } else {
+            // User has not liked the post, so we add the like
+            post.likes.push({ userId });
+        }
+
+        await post.save();
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+};
+
+
+
 
 module.exports = {
     createPost,
@@ -139,4 +170,5 @@ module.exports = {
     getPostsByUser,
     updatePost,
     deletePost,
+    likePost
 };

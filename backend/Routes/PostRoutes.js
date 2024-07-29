@@ -1,6 +1,6 @@
 const express = require('express');
 const multer = require('multer');
-const { createPost, getPosts, getPostById, getPostsByUser, updatePost, deletePost } = require('../Controllers/PostController');
+const { createPost, getPosts, getPostById, getPostsByUser, updatePost, deletePost,likePost } = require('../Controllers/PostController');
 const authenticate = require('../middleware/auth');
 const path = require('path');
 const fs = require('fs');
@@ -53,5 +53,8 @@ router.put('/:id', authenticate, upload.fields([
   { name: 'videos', maxCount: 2 }
 ]), updatePost);
 router.delete('/:id', authenticate, deletePost);
+router.post('/:id/like', authenticate, likePost);
+
+
 
 module.exports = router;

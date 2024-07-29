@@ -76,6 +76,7 @@ db.once('open', () => {
   console.log('Connected to MongoDB');
 });
 
+
 // Error handling middleware
 app.use((err, req, res, next) => {
   console.error(err.stack);

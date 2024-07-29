@@ -1,19 +1,23 @@
 const mongoose = require('mongoose');
-const User = require('../Models/User');
 
 const PostSchema = new mongoose.Schema({
-  text: { type: String, required: false },
-  photos: { type: [String], required: false },
-  videos: { type: [String], required: false },
-  location: { type: String, required: false },
-  caption: { type: String, required: false },
-  backgroundColor: { type: String, required: false },
-  postType: { 
-    type: String, 
-    enum: ['text', 'media'], // Only allow 'text' or 'media'
-    required: true 
-  },
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true }, 
-}, { timestamps: true });
+    text: String,
+    photos: [String],
+    videos: [String],
+    location: String,
+    caption: String,
+    backgroundColor: String,
+    postType: {
+        type: String,
+        enum: ['text', 'media'],
+    },
+    user: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+    likes: [{
+        userId: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
+        likedAt: { type: Date, default: Date.now }
+    }]
+}, {
+    timestamps: true // Add this line
+});
 
 module.exports = mongoose.model('Post', PostSchema);
