@@ -1,7 +1,7 @@
 const express = require('express');
 const multer = require('multer');
 const { createPost, getPosts, getPostById, getPostsByUser, updatePost, deletePost,likePost } = require('../Controllers/PostController');
-const authenticate = require('../middleware/auth');
+const authenticate = require('../Middleware/auth');
 const path = require('path');
 const fs = require('fs');
 

@@ -16,6 +16,8 @@ import AboutUs from './Components/HomePageCompo/AboutUs/AboutUs';
 import Footer from './Components/HomePageCompo/Footer/Footer';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute'; // Import ProtectedRoute
 import { AuthProvider } from './Context/AuthContext'; // Import AuthProvider
+import Profile from './Components/Login_Post_Profile/Profile/Profile';
+import ProfilePage from './Pages/ProfilePage';
 
 function App() {
   return (
@@ -40,6 +42,7 @@ function App() {
               <Route path="/medicine" element={<MedicinePage />} />
               <Route path="/places" element={<AttractivePlacesPage />} />
               <Route path="/about" element={<AboutUs />} />
+              <Route path="/profile" element={<ProfilePage />} />
             </Routes>
             <Footer />
           </div>

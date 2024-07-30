@@ -16,6 +16,22 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  description: {
+    type: String,
+    default: '', // Default to an empty string if not provided
+  },
+  profileImage: {
+    type: String, // URL or path to the profile image
+    default: '', // Default to an empty string if not provided
+  },
+  address: {
+    type: String,
+    default: '', // Default to an empty string if not provided
+  },
+  contactNumber: {
+    type: String,
+    default: '', // Default to an empty string if not provided
+  }
 });
 
 // Hash password before saving

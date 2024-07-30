@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser, faPen } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
+import { useNavigate, useLocation } from 'react-router-dom';
 import CreatePost from '../CreatePost/CreatePost';
 import './CreatePostNavBar.css';
 
@@ -10,6 +11,8 @@ Modal.setAppElement('#root');
 
 const CreatePostNavBar = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -17,6 +20,22 @@ const CreatePostNavBar = () => {
 
   const closeModal = () => {
     setModalIsOpen(false);
+  };
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const goToProfile = () => {
+    navigate('/profile'); // Adjust the path as needed
+  };
+
+  const scrollToTopOrNavigate = () => {
+    if (location.pathname === '/posts') {
+      scrollToTop();
+    } else {
+      navigate('/posts');
+    }
   };
 
   return (
@@ -29,12 +48,12 @@ const CreatePostNavBar = () => {
             </button>
           </li>
           <li>
-            <button className="nav-button">
+            <button className="nav-button" onClick={goToProfile}>
               <FontAwesomeIcon icon={faUser} />
             </button>
           </li>
           <li>
-            <button className="nav-button">
+            <button className="nav-button" onClick={scrollToTopOrNavigate}>
               <FontAwesomeIcon icon={faHome} />
             </button>
           </li>

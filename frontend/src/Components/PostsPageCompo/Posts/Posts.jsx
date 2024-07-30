@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faComment, faMessage, faMapMarkerAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
@@ -8,24 +8,33 @@ const Posts = () => {
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [likedPosts, setLikedPosts] = useState({}); // Track liked posts
+  const [likedPosts, setLikedPosts] = useState({});
 
-  useEffect(() => {
-    const fetchPosts = async () => {
-      try {
-        const response = await axios.get('http://localhost:5000/api/posts');
-        const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-        setPosts(sortedPosts);
-      } catch (err) {
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // Fetch and sort posts by creation time
+  const fetchPosts = useCallback(async () => {
+    try {
+      const response = await axios.get('http://localhost:5000/api/posts');
+      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by creation time
+      setPosts(sortedPosts);
 
-    fetchPosts();
+      // Initialize likedPosts state
+      const initialLikedPosts = {};
+      response.data.forEach(post => {
+        initialLikedPosts[post._id] = post.likes.some(like => like.userId === 'currentUserId'); // Adjust 'currentUserId' as needed
+      });
+      setLikedPosts(initialLikedPosts);
+    } catch (err) {
+      setError(err.message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
+  useEffect(() => {
+    fetchPosts();
+  }, [fetchPosts]);
+
+  // Handle like button click
   const handleLike = async (postId) => {
     if (!postId) {
       console.error('Post ID is missing');
@@ -34,34 +43,61 @@ const Posts = () => {
 
     try {
       const response = await axios.post(`http://localhost:5000/api/posts/${postId}/like`);
-      setLikedPosts(prevLikedPosts => {
-        const newLikedPosts = { ...prevLikedPosts };
-        newLikedPosts[postId] = !newLikedPosts[postId];
+      const updatedPost = response.data;
 
-        const updatedPosts = posts.map(post => 
-          post._id === postId ? {
-            ...post,
-            likes: response.data.likes // Ensure this is an array or number
-          } : post
-        );
+      // Update the like status without affecting the order of posts
+      setLikedPosts(prevLikedPosts => ({
+        ...prevLikedPosts,
+        [postId]: !prevLikedPosts[postId]
+      }));
 
-        setPosts(updatedPosts);
-        return newLikedPosts;
-      });
+      setPosts(prevPosts =>
+        prevPosts.map(post =>
+          post._id === postId ? { ...post, likes: updatedPost.likes } : post
+        )
+      );
     } catch (err) {
       console.error('Error liking post:', err);
     }
   };
 
-  const handleNewPost = (newPost) => {
-    setPosts(prevPosts => [newPost, ...prevPosts]);
+  // Handle new post creation
+  const handleNewPost = async (newPost) => {
+    try {
+      const response = await axios.post('http://localhost:5000/api/posts', newPost);
+      const createdPost = response.data;
+      setPosts(prevPosts => [createdPost, ...prevPosts]); // Add the new post to the top
+    } catch (err) {
+      console.error('Error creating new post:', err);
+    }
   };
 
-  const Post = ({ _id, postType, user, text, photos, location, backgroundColor, likes }) => {
+  const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes }) => {
     const userName = user?.username || 'Unknown User';
-    const userProfile = user?.profilePicture || 'https://via.placeholder.com/50';
-    
-    const likeCount = Array.isArray(likes) ? likes.length : likes; // Ensure likes is a number for rendering
+    const userProfile = user?.profileImage || 'https://via.placeholder.com/50';
+
+    const likeCount = Array.isArray(likes) ? likes.length : likes;
+    const isLiked = likedPosts[_id] || false;
+
+    const renderMedia = () => (
+      <>
+        {photos.length === 1 ? (
+          <img src={`http://localhost:5000/${photos[0]}`} alt="Post Media" className="media-image" />
+        ) : (
+          <div className="media-collage">
+            {photos.map((item, index) => (
+              <img key={index} src={`http://localhost:5000/${item}`} alt={`Post Media ${index}`} className="media-image" />
+            ))}
+          </div>
+        )}
+        {videos.map((video, index) => (
+          <video key={index} controls className="media-video">
+            <source src={`http://localhost:5000/${video}`} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        ))}
+      </>
+    );
 
     return (
       <div className="post">
@@ -88,22 +124,14 @@ const Posts = () => {
         {postType === 'media' && (
           <div className="media-gallery">
             <p className='post-content'>{text}</p>
-            {photos.length === 1 ? (
-              <img src={`http://localhost:5000/${photos[0]}`} alt="Post Media" className="media-image" />
-            ) : (
-              <div className="media-collage">
-                {photos.map((item, index) => (
-                  <img key={index} src={`http://localhost:5000/${item}`} alt={`Post Media ${index}`} className="media-image" />
-                ))}
-              </div>
-            )}
+            {renderMedia()}
           </div>
         )}
 
         <div className="post-footer">
           <div className="post-actions">
             <div className="post-actions-icons-div" onClick={() => handleLike(_id)}>
-              <FontAwesomeIcon icon={faHeart} className="like-icon" />
+              <FontAwesomeIcon icon={faHeart} className={`like-icon ${isLiked ? 'liked' : ''}`} />
               <span className="likes-count">{likeCount} Likes</span>
             </div>
             <div className="post-actions-icons-div">
@@ -133,9 +161,10 @@ const Posts = () => {
           user={post.user || {}}
           text={post.text}
           photos={post.photos || []}
+          videos={post.videos || []}
           location={post.location || 'none'}
           backgroundColor={post.backgroundColor}
-          likes={post.likes || 0} // Ensure likes is a number or array
+          likes={post.likes || 0}
         />
       ))}
     </div>
