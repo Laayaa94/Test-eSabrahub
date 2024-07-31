@@ -1,0 +1,16 @@
+.profilePage-container-three-parts{
+    display: flex;
+    flex-direction: row;
+}
+.profilepage-leftpane{
+    flex: 2;
+    height: 95vh;
+    background-color: antiquewhite;
+   
+}
+.profilepage-middlepage{
+    flex: 3;
+}
+.profilepage-rightpage{
+    flex: 2;
+}

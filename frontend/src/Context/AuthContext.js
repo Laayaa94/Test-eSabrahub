@@ -11,19 +11,40 @@ export const AuthProvider = ({ children }) => {
   });
 
   useEffect(() => {
+    const initializeAuth = async () => {
+      const token = localStorage.getItem('token');
+      if (token) {
+        try {
+          const response = await axios.get('http://localhost:5000/api/auth/verify', {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setAuthState({ user: response.data.user, token });
+        } catch (error) {
+          console.error('Token validation failed:', error);
+          localStorage.removeItem('token');
+          setAuthState({ user: null, token: null });
+        }
+      }
+    };
+
+    initializeAuth();
+  }, []);
+
+  useEffect(() => {
     if (authState.token) {
       axios.defaults.headers.common['Authorization'] = `Bearer ${authState.token}`;
+    } else {
+      delete axios.defaults.headers.common['Authorization'];
     }
   }, [authState.token]);
 
   const login = async (email, password) => {
     try {
       const response = await axios.post('http://localhost:5000/api/users/login', { email, password });
-      console.log('Login Response:', response.data); // Log API response
       setAuthState({ user: response.data.user, token: response.data.token });
       localStorage.setItem('token', response.data.token);
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Login failed:', error.response?.data || error.message);
       throw error;
     }
   };
@@ -31,15 +52,13 @@ export const AuthProvider = ({ children }) => {
   const signup = async (username, email, password, confirmPassword) => {
     try {
       const response = await axios.post('http://localhost:5000/api/users/signup', { username, email, password, confirmPassword });
-      console.log('Signup Response:', response.data); // Log API response
       setAuthState({ user: response.data.user, token: response.data.token });
       localStorage.setItem('token', response.data.token);
     } catch (error) {
-      console.error('Signup failed:', error.response?.data || error.message); // More detailed error info
+      console.error('Signup failed:', error.response?.data || error.message);
       throw error;
     }
   };
-  
 
   const logout = () => {
     setAuthState({ user: null, token: null });

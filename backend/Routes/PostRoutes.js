@@ -52,6 +52,7 @@ router.put('/:id', authenticate, upload.fields([
   { name: 'photos', maxCount: 5 },
   { name: 'videos', maxCount: 2 }
 ]), updatePost);
+
 router.delete('/:id', authenticate, deletePost);
 router.post('/:id/like', authenticate, likePost);
 

@@ -80,12 +80,14 @@ exports.getUserDetails = async (req, res) => {
   }
 };
 
-// Edit user details
 exports.editUserDetails = async (req, res) => {
   try {
-    const { description, email, address, contactNumber } = req.body;
+    const { description, email, address, contactNumber, username } = req.body;
 
-    const updatedFields = { description, email, address, contactNumber };
+    // Log the incoming data
+    console.log('Request body:', req.body);
+
+    const updatedFields = { description, email, address, contactNumber, username };
 
     // Handle profile image upload
     if (req.file) {
@@ -93,6 +95,9 @@ exports.editUserDetails = async (req, res) => {
       const profileImagePath = `/uploads/profiles/${req.file.filename}`;
       updatedFields.profileImage = profileImagePath;
     }
+
+    // Log the fields to be updated
+    console.log('Updated fields:', updatedFields);
 
     // Update user details
     const user = await User.findByIdAndUpdate(req.user.id, { $set: updatedFields }, { new: true });

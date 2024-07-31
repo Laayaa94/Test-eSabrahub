@@ -4,6 +4,7 @@ const Post = require('../Models/Post');
 const fs = require('fs');
 const path = require('path');
 
+
 const ensureUploadDirsExist = () => {
   const photoDir = path.join(__dirname, '..', 'uploads', 'photos');
   const videoDir = path.join(__dirname, '..', 'uploads', 'videos');
@@ -87,15 +88,60 @@ const getPostsByUser = async (req, res) => {
 
 const updatePost = async (req, res) => {
   try {
-    const post = await Post.findByIdAndUpdate(req.params.id, req.body, { new: true }).populate('user', 'username email');
-    if (!post) {
-      return res.status(404).json({ error: 'Post not found' });
+    const postId = req.params.id;
+    const { text, location, caption, backgroundColor, postType } = req.body;
+
+    // Get new media files
+    const photos = req.files.photos ? req.files.photos.map(file => file.path) : [];
+    const videos = req.files.videos ? req.files.videos.map(file => file.path) : [];
+
+    // Fetch the current post to get old media files
+    const currentPost = await Post.findById(postId);
+
+    if (!currentPost) {
+      return res.status(404).json({ message: 'Post not found' });
     }
-    res.status(200).json(post);
+
+    // If new media is provided, remove old media files
+    if (photos.length > 0 || videos.length > 0) {
+      if (currentPost.photos) {
+        const oldPhotos = currentPost.photos.filter(photo => !photos.includes(photo));
+        oldPhotos.forEach(photo => {
+          fs.unlink(photo, err => {
+            if (err) console.error('Error deleting old photo:', err);
+          });
+        });
+      }
+
+      if (currentPost.videos) {
+        const oldVideos = currentPost.videos.filter(video => !videos.includes(video));
+        oldVideos.forEach(video => {
+          fs.unlink(video, err => {
+            if (err) console.error('Error deleting old video:', err);
+          });
+        });
+      }
+    }
+
+    // Update the post with new media paths and other fields
+    const updatedPost = await Post.findByIdAndUpdate(postId, {
+      text,
+      location,
+      caption,
+      backgroundColor,
+      postType,
+      photos: photos.length > 0 ? photos : currentPost.photos,
+      videos: videos.length > 0 ? videos : currentPost.videos
+    }, { new: true });
+
+    res.status(200).json(updatedPost);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error('Error updating post:', error);
+    res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+module.exports = { updatePost };
 
 const deletePost = async (req, res) => {
   try {

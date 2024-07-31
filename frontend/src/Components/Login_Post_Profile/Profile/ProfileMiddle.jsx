@@ -1,40 +1,84 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faComment, faMessage, faMapMarkerAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
-import './Posts.css';
+import { faComment, faMessage, faMapMarkerAlt, faTrash, faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
+import { useAuth } from '../../../Context/AuthContext';
+import UpdatePost from '../../../Components/PostsPageCompo/UpdatePost/UpdatePost';
+import Modal from 'react-modal';
 
-const Posts = () => {
+Modal.setAppElement('#root');
+
+const ProfileMiddle = () => {
+  const { authState } = useAuth();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [editPost, setEditPost] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
 
-  // Fetch and sort posts by creation time
   const fetchPosts = useCallback(async () => {
-    try {
-      const response = await axios.get('http://localhost:5000/api/posts');
-      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by creation time
-      setPosts(sortedPosts);
+    if (!authState || !authState.user) {
+      setError('User is not authenticated');
+      setLoading(false);
+      return;
+    }
 
+    const userId = authState.user._id;
+    if (!userId) {
+      setError('User ID is not available');
+      setLoading(false);
+      return;
+    }
+
+    try {
+      const response = await axios.get(`http://localhost:5000/api/posts/user/${userId}`);
+      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      
       // Initialize likedPosts state
       const initialLikedPosts = {};
       response.data.forEach(post => {
-        initialLikedPosts[post._id] = post.likes.some(like => like.userId === 'currentUserId'); // Adjust 'currentUserId' as needed
+        initialLikedPosts[post._id] = post.likes.some(like => like.userId === authState.user._id); // Adjust user ID check as needed
       });
       setLikedPosts(initialLikedPosts);
+
+      setPosts(sortedPosts);
     } catch (err) {
       setError(err.message);
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [authState]);
 
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
 
-  // Handle like button click
+  const handleEditPost = async (updatedPost) => {
+    try {
+      const response = await axios.put(`http://localhost:5000/api/posts/${updatedPost._id}`, updatedPost, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${authState.token}`
+        }
+      });
+      setPosts(prevPosts => prevPosts.map(post => (post._id === updatedPost._id ? response.data : post)));
+      setEditPost(null);
+    } catch (err) {
+      console.error('Error updating post:', err);
+    }
+  };
+
+  const handleDeletePost = async (postId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/posts/${postId}`, {
+        headers: { Authorization: `Bearer ${authState.token}` }
+      });
+      setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+    } catch (err) {
+      console.error('Error deleting post:', err);
+    }
+  };
+
   const handleLike = async (postId) => {
     if (!postId) {
       console.error('Post ID is missing');
@@ -42,10 +86,12 @@ const Posts = () => {
     }
 
     try {
-      const response = await axios.post(`http://localhost:5000/api/posts/${postId}/like`);
+      const response = await axios.post(`http://localhost:5000/api/posts/${postId}/like`, {}, {
+        headers: { Authorization: `Bearer ${authState.token}` }
+      });
       const updatedPost = response.data;
 
-      // Update the like status without affecting the order of posts
+      // Update the like status
       setLikedPosts(prevLikedPosts => ({
         ...prevLikedPosts,
         [postId]: !prevLikedPosts[postId]
@@ -61,18 +107,15 @@ const Posts = () => {
     }
   };
 
-  // Handle new post creation
-  const handleNewPost = async (newPost) => {
-    try {
-      const response = await axios.post('http://localhost:5000/api/posts', newPost);
-      const createdPost = response.data;
-      setPosts(prevPosts => [createdPost, ...prevPosts]); // Add the new post to the top
-    } catch (err) {
-      console.error('Error creating new post:', err);
-    }
+  const openEditModal = (post) => {
+    setEditPost(post);
   };
 
-  const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes ,caption}) => {
+  const closeEditModal = () => {
+    setEditPost(null);
+  };
+
+  const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes, caption }) => {
     const userName = user?.username || 'Unknown User';
     const userProfile = user?.profileImage || 'https://via.placeholder.com/50';
 
@@ -110,9 +153,14 @@ const Posts = () => {
             <div className="post-location">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
               <span className="location-name">{location}</span>
-              <FontAwesomeIcon icon={faUserPlus} className="follow-icon" />
             </div>
           )}
+          <div className="post-actions-icons-div">
+            <FontAwesomeIcon icon={faEdit} className="edit-icon" onClick={() => openEditModal({ _id, text, location, postType, photos, videos, caption })} />
+          </div>
+          <div className="post-actions-icons-div">
+            <FontAwesomeIcon icon={faTrash} className="delete-icon" onClick={() => handleDeletePost(_id)} />
+          </div>
         </div>
 
         {postType === 'text' && (
@@ -148,28 +196,48 @@ const Posts = () => {
     );
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   return (
     <div className="posts-container">
-      {posts.map((post) => (
-        <Post
-          key={post._id}
-          _id={post._id}
-          postType={post.postType}
-          user={post.user || {}}
-          text={post.text}
-          photos={post.photos || []}
-          videos={post.videos || []}
-          caption={post.caption}
-          location={post.location || 'none'}
-          backgroundColor={post.backgroundColor}
-          likes={post.likes || 0}
-        />
-      ))}
+      <Modal
+        isOpen={!!editPost}
+        onRequestClose={closeEditModal}
+        contentLabel="Edit Post Modal"
+        className="modal"
+        overlayClassName="modal-overlay"
+      >
+        <button onClick={closeEditModal} className="close-modal-button">X</button>
+        {editPost && (
+          <UpdatePost
+            post={editPost}
+            onClose={closeEditModal}
+            onSave={fetchPosts}
+          />
+        )}
+      </Modal>
+
+      {loading ? (
+        <div>Loading...</div>
+      ) : error ? (
+        <div>Error: {error}</div>
+      ) : (
+        posts.map(post => (
+          <Post
+            key={post._id}
+            _id={post._id}
+            postType={post.postType}
+            user={post.user || {}}
+            text={post.text}
+            caption={post.caption}
+            photos={post.photos || []}
+            videos={post.videos || []}
+            location={post.location || 'none'}
+            backgroundColor={post.backgroundColor}
+            likes={post.likes || []}
+          />
+        ))
+      )}
     </div>
   );
 };
 
-export default Posts;
+export default ProfileMiddle
