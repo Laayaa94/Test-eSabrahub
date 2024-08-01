@@ -8,6 +8,7 @@ const bodyParser = require('body-parser');
 const multer = require('multer');
 const userRoutes = require('./Routes/Auth');
 const postRoutes = require('./Routes/PostRoutes');
+const serviceRoute = require('./Routes/ServiceRoutes');
 
 dotenv.config();
 
@@ -37,16 +38,13 @@ const ensureUploadDirsExist = () => {
   const photoDir = path.join(__dirname, 'uploads', 'photos');
   const videoDir = path.join(__dirname, 'uploads', 'videos');
   const profileDir = path.join(__dirname, 'uploads', 'profiles');
+  const mainPhotoDir = path.join(__dirname, 'uploads', 'mainphotos');
   
-  if (!fs.existsSync(photoDir)) {
-    fs.mkdirSync(photoDir, { recursive: true });
-  }
-  if (!fs.existsSync(videoDir)) {
-    fs.mkdirSync(videoDir, { recursive: true });
-  }
-  if (!fs.existsSync(profileDir)) {
-    fs.mkdirSync(profileDir, { recursive: true });
-  }
+  [photoDir, videoDir, profileDir, mainPhotoDir].forEach(dir => {
+    if (!fs.existsSync(dir)) {
+      fs.mkdirSync(dir, { recursive: true });
+    }
+  });
 };
 
 ensureUploadDirsExist();
@@ -57,6 +55,7 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Apply routes
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
+app.use('/api/service',serviceRoute)
 
 // MongoDB Connection
 mongoose.connect(`mongodb+srv://prabodaharshani95:Mongo94@esabratest.vocqobw.mongodb.net/esabra`, {

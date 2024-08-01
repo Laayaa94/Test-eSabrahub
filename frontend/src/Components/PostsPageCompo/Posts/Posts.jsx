@@ -34,7 +34,6 @@ const Posts = () => {
     fetchPosts();
   }, [fetchPosts]);
 
-  // Handle like button click
   const handleLike = async (postId) => {
     if (!postId) {
       console.error('Post ID is missing');
@@ -45,7 +44,6 @@ const Posts = () => {
       const response = await axios.post(`http://localhost:5000/api/posts/${postId}/like`);
       const updatedPost = response.data;
 
-      // Update the like status without affecting the order of posts
       setLikedPosts(prevLikedPosts => ({
         ...prevLikedPosts,
         [postId]: !prevLikedPosts[postId]
@@ -61,15 +59,8 @@ const Posts = () => {
     }
   };
 
-  // Handle new post creation
-  const handleNewPost = async (newPost) => {
-    try {
-      const response = await axios.post('http://localhost:5000/api/posts', newPost);
-      const createdPost = response.data;
-      setPosts(prevPosts => [createdPost, ...prevPosts]); // Add the new post to the top
-    } catch (err) {
-      console.error('Error creating new post:', err);
-    }
+  const handleNewPost = (newPost) => {
+    setPosts(prevPosts => [newPost, ...prevPosts]); // Add the new post to the top
   };
 
   const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes ,caption}) => {
@@ -158,14 +149,14 @@ const Posts = () => {
           key={post._id}
           _id={post._id}
           postType={post.postType}
-          user={post.user || {}}
+          user={post.user}
           text={post.text}
-          photos={post.photos || []}
-          videos={post.videos || []}
-          caption={post.caption}
-          location={post.location || 'none'}
+          photos={post.photos}
+          videos={post.videos}
+          location={post.location}
           backgroundColor={post.backgroundColor}
-          likes={post.likes || 0}
+          caption={post.caption}
+          likes={post.likes}
         />
       ))}
     </div>
