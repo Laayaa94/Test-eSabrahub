@@ -16,14 +16,15 @@ const serviceSchema = new mongoose.Schema({
     mainPhoto: {
         type: String,  // URL or file path for the main photo
     },
-    additionalPhotos: {
-        type: [String],  // Array of URLs or file paths for additional photos
-        default: [],
-    },
+   
     serviceType: {
         type: String,
         enum: ['accommodation', 'food', 'medical', 'transport', 'attractiveplaces'],
         required: true,
+    },
+    extraPhotos: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'ServiceExtraPhotos', // Reference to the ServiceExtraPhotos model
     }
 }, {
     timestamps: true

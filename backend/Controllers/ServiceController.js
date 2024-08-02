@@ -1,10 +1,13 @@
-const Service = require('../Models/Service'); // Adjust the path to your Service model
+const mongoose = require('mongoose');
 const path = require('path');
 const fs = require('fs');
+const Service = require('../Models/Service');
+const ServiceExtraPhotos = require('../Models/ServicesExtraPhotos'); // Ensure this path is correct
+
 
 // Ensure upload directories exist
 const ensureUploadDirsExist = () => {
-    const uploadDirs = ['mainphotos'];
+    const uploadDirs = ['mainphotos', 'additionalphotos'];
     uploadDirs.forEach(dir => {
         const dirPath = path.join(__dirname, '..', 'uploads', dir);
         if (!fs.existsSync(dirPath)) {
@@ -22,36 +25,28 @@ const createService = async (req, res) => {
 
         // Validate required fields
         if (!name || !location || !description || !serviceType) {
-            return res.status(400).json({
-                message: 'All fields are required: name, location, description, serviceType.'
-            });
+            return res.status(400).json({ message: 'All fields are required: name, location, description, serviceType.' });
         }
 
-        // Handle file path
-        const mainPhoto = req.files.mainPhoto ? req.files.mainPhoto[0].filename : null; // Use filename
+        // Handle file paths
+        const mainPhoto = req.files.mainPhoto ? req.files.mainPhoto[0].filename : null;
 
         // Create a new service document
         const newService = new Service({
             name,
             location,
             description,
-            mainPhoto, // Save the filename
+            mainPhoto,
             serviceType
         });
 
         // Save the service to the database
         await newService.save();
 
-        res.status(201).json({
-            message: 'Service created successfully',
-            service: newService
-        });
+        res.status(201).json({ message: 'Service created successfully', service: newService });
     } catch (error) {
         console.error('Error creating service:', error);
-        res.status(500).json({
-            message: 'Error creating service',
-            error: error.message
-        });
+        res.status(500).json({ message: 'Error creating service', error: error.message });
     }
 };
 
@@ -62,10 +57,7 @@ const getAllServices = async (req, res) => {
         res.status(200).json(services);
     } catch (error) {
         console.error('Error fetching services:', error);
-        res.status(500).json({
-            message: 'Error fetching services',
-            error: error.message
-        });
+        res.status(500).json({ message: 'Error fetching services', error: error.message });
     }
 };
 
@@ -76,18 +68,13 @@ const getServiceById = async (req, res) => {
         const service = await Service.findById(id);
 
         if (!service) {
-            return res.status(404).json({
-                message: 'Service not found'
-            });
+            return res.status(404).json({ message: 'Service not found' });
         }
 
         res.status(200).json(service);
     } catch (error) {
         console.error('Error fetching service:', error);
-        res.status(500).json({
-            message: 'Error fetching service',
-            error: error.message
-        });
+        res.status(500).json({ message: 'Error fetching service', error: error.message });
     }
 };
 
@@ -101,9 +88,7 @@ const updateService = async (req, res) => {
         const service = await Service.findById(id);
 
         if (!service) {
-            return res.status(404).json({
-                message: 'Service not found'
-            });
+            return res.status(404).json({ message: 'Service not found' });
         }
 
         // Update fields
@@ -124,41 +109,45 @@ const updateService = async (req, res) => {
         // Save updated service
         await service.save();
 
-        res.status(200).json({
-            message: 'Service updated successfully',
-            service
-        });
+        res.status(200).json({ message: 'Service updated successfully', service });
     } catch (error) {
         console.error('Error updating service:', error);
-        res.status(500).json({
-            message: 'Error updating service',
-            error: error.message
-        });
+        res.status(500).json({ message: 'Error updating service', error: error.message });
     }
 };
+
+
 // Get services by postType
 const getServicesByPostType = async (req, res) => {
-  try {
-      const { postType } = req.query;
+    try {
+        const { postType } = req.query;
 
-      // Validate postType parameter
-      if (!postType) {
-          return res.status(400).json({ message: 'postType query parameter is required.' });
-      }
+        // Validate postType parameter
+        if (!postType) {
+            return res.status(400).json({ message: 'postType query parameter is required.' });
+        }
 
-      // Fetch services by postType
-      const services = await Service.find({ serviceType: postType });
+        // Fetch services by postType
+        const services = await Service.find({ serviceType: postType });
 
-      // Return the services
-      res.status(200).json(services);
-  } catch (error) {
-      console.error('Error fetching services by postType:', error);
-      res.status(500).json({
-          message: 'Error fetching services by postType',
-          error: error.message
-      });
-  }
+        // Fetch extra photos for each service
+        const servicesWithPhotos = await Promise.all(services.map(async (service) => {
+            const extraPhotos = await ServiceExtraPhotos.findOne({ serviceId: service._id });
+            return {
+                ...service.toObject(),
+                extraPhotos: extraPhotos ? extraPhotos.extraPhotos : []
+            };
+        }));
+
+        res.status(200).json(servicesWithPhotos);
+    } catch (error) {
+        console.error('Error fetching services by postType:', error);
+        res.status(500).json({ message: 'Error fetching services by postType', error: error.message });
+    }
 };
+
+
+
 // Delete a service
 const deleteService = async (req, res) => {
     try {
@@ -166,9 +155,7 @@ const deleteService = async (req, res) => {
         const service = await Service.findByIdAndDelete(id);
 
         if (!service) {
-            return res.status(404).json({
-                message: 'Service not found'
-            });
+            return res.status(404).json({ message: 'Service not found' });
         }
 
         // Delete file if exists
@@ -176,15 +163,10 @@ const deleteService = async (req, res) => {
             fs.unlinkSync(path.join(__dirname, '..', 'uploads', 'mainphotos', service.mainPhoto));
         }
 
-        res.status(200).json({
-            message: 'Service deleted successfully'
-        });
+        res.status(200).json({ message: 'Service deleted successfully' });
     } catch (error) {
         console.error('Error deleting service:', error);
-        res.status(500).json({
-            message: 'Error deleting service',
-            error: error.message
-        });
+        res.status(500).json({ message: 'Error deleting service', error: error.message });
     }
 };
 

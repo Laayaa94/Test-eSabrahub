@@ -9,6 +9,7 @@ const multer = require('multer');
 const userRoutes = require('./Routes/Auth');
 const postRoutes = require('./Routes/PostRoutes');
 const serviceRoute = require('./Routes/ServiceRoutes');
+const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute'); // Import the new route
 
 dotenv.config();
 
@@ -39,8 +40,9 @@ const ensureUploadDirsExist = () => {
   const videoDir = path.join(__dirname, 'uploads', 'videos');
   const profileDir = path.join(__dirname, 'uploads', 'profiles');
   const mainPhotoDir = path.join(__dirname, 'uploads', 'mainphotos');
-  
-  [photoDir, videoDir, profileDir, mainPhotoDir].forEach(dir => {
+  const extraPhotosDir = path.join(__dirname, 'uploads', 'extrapics'); // Add this line
+
+  [photoDir, videoDir, profileDir, mainPhotoDir, extraPhotosDir].forEach(dir => { // Add extraPhotosDir here
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }
@@ -55,7 +57,8 @@ app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 // Apply routes
 app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
-app.use('/api/service',serviceRoute)
+app.use('/api/service', serviceRoute);
+app.use('/api/extraphotos',serviceExtraPhotosRoute ); 
 
 // MongoDB Connection
 mongoose.connect(`mongodb+srv://prabodaharshani95:Mongo94@esabratest.vocqobw.mongodb.net/esabra`, {
@@ -78,10 +81,12 @@ db.once('open', () => {
 
 // Error handling middleware
 app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send('Something broke!');
+  console.error('Error:', err); // Logs the error details to the console
+  res.status(500).json({
+      message: 'Something broke!',
+      error: err.message
+  });
 });
-
 // Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
