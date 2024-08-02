@@ -126,6 +126,7 @@ const CreatePost = () => {
             onChange={handleFileChange}
           />
         </div>
+        
         <button type="submit">Create Service</button>
       </form>
     </div>

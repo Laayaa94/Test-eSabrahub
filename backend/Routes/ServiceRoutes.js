@@ -23,9 +23,11 @@ const upload = multer({
     limits: { fileSize: 5 * 1024 * 1024 } // 5MB limit
 });
 
+var multipleUpload=upload.fields([{name:'mainPhoto', maxCount:1},{name:'others',maxCount:5}])
+
 router.get('/by-type', serviceController.getServicesByPostType); // Specific route first
 
-router.post('/create', upload.fields([
+router.post('/create',multipleUpload, upload.fields([
     { name: 'mainPhoto', maxCount: 1 }
 ]), serviceController.createService);
 

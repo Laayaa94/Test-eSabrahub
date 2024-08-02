@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { fetchServicesByType } from '../ServicesAPI/Api';
 import './ServicesAdmin.css'; // Import CSS file
 
-function AttractivePlaces() {
+function Accomodation() {
   const [services, setServices] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -68,4 +68,4 @@ function AttractivePlaces() {
   );
 }
 
-export default AttractivePlaces;
+export default Accomodation;
