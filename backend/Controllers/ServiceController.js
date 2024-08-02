@@ -136,7 +136,29 @@ const updateService = async (req, res) => {
         });
     }
 };
+// Get services by postType
+const getServicesByPostType = async (req, res) => {
+  try {
+      const { postType } = req.query;
 
+      // Validate postType parameter
+      if (!postType) {
+          return res.status(400).json({ message: 'postType query parameter is required.' });
+      }
+
+      // Fetch services by postType
+      const services = await Service.find({ serviceType: postType });
+
+      // Return the services
+      res.status(200).json(services);
+  } catch (error) {
+      console.error('Error fetching services by postType:', error);
+      res.status(500).json({
+          message: 'Error fetching services by postType',
+          error: error.message
+      });
+  }
+};
 // Delete a service
 const deleteService = async (req, res) => {
     try {
@@ -171,5 +193,6 @@ module.exports = {
     getAllServices,
     getServiceById,
     updateService,
+    getServicesByPostType,
     deleteService
 };

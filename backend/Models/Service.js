@@ -7,7 +7,7 @@ const serviceSchema = new mongoose.Schema({
     location: {
         type: String,
     },
-    smallDescription: {
+    description: {
         type: String,
     },
     mainPhoto: {
