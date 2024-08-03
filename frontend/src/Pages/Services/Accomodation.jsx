@@ -1,9 +1,10 @@
 import React from 'react'
+import AccomodationCompo from '../../Components/ServicesCompo/AccomodationCompo'
 
 const Accomodation = () => {
   return (
     <div>
-      accomodation
+      <AccomodationCompo/>
     </div>
   )
 }
