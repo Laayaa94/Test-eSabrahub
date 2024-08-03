@@ -113,7 +113,6 @@ const CreatePost = () => {
           Media Post
         </button>
       </div>
-
       <form onSubmit={handleSubmit}>
         {postType === 'text' && (
           <>

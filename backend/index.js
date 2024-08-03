@@ -9,7 +9,7 @@ const multer = require('multer');
 const userRoutes = require('./Routes/Auth');
 const postRoutes = require('./Routes/PostRoutes');
 const serviceRoute = require('./Routes/ServiceRoutes');
-const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute'); // Import the new route
+const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute'); 
 
 dotenv.config();
 
@@ -40,9 +40,9 @@ const ensureUploadDirsExist = () => {
   const videoDir = path.join(__dirname, 'uploads', 'videos');
   const profileDir = path.join(__dirname, 'uploads', 'profiles');
   const mainPhotoDir = path.join(__dirname, 'uploads', 'mainphotos');
-  const extraPhotosDir = path.join(__dirname, 'uploads', 'extrapics'); // Add this line
+  const extraPhotosDir = path.join(__dirname, 'uploads', 'extrapics'); 
 
-  [photoDir, videoDir, profileDir, mainPhotoDir, extraPhotosDir].forEach(dir => { // Add extraPhotosDir here
+  [photoDir, videoDir, profileDir, mainPhotoDir, extraPhotosDir].forEach(dir => { 
     if (!fs.existsSync(dir)) {
       fs.mkdirSync(dir, { recursive: true });
     }

@@ -3,11 +3,19 @@ const path = require('path');
 const fs = require('fs');
 
 // Create extra photos for a specific service
+// Controller Function
 const createServiceExtraPhotos = async (req, res) => {
     try {
         console.log('Files received:', req.files);
-        const { serviceId } = req.params;
-        const extraPhotos = req.files.extraPhotos ? req.files.extraPhotos.map(file => file.filename) : [];
+        const { serviceId } = req.params; // Use req.params to get serviceId from URL params
+
+        if (!req.files || !req.files['extraPhotos']) {
+            return res.status(400).json({
+                message: 'No files uploaded'
+            });
+        }
+
+        const extraPhotos = req.files['extraPhotos'].map(file => file.filename);
 
         const newServiceExtraPhotos = new ServiceExtraPhotos({
             serviceId,
@@ -24,7 +32,7 @@ const createServiceExtraPhotos = async (req, res) => {
         console.error('Error creating service extra photos:', error);
         res.status(500).json({
             message: 'Error creating service extra photos',
-            error: error.message
+            error: error.message || 'An unexpected error occurred'
         });
     }
 };

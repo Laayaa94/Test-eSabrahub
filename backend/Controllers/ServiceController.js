@@ -7,7 +7,7 @@ const ServiceExtraPhotos = require('../Models/ServicesExtraPhotos'); // Ensure t
 
 // Ensure upload directories exist
 const ensureUploadDirsExist = () => {
-    const uploadDirs = ['mainphotos', 'additionalphotos'];
+    const uploadDirs = ['mainphotos'];
     uploadDirs.forEach(dir => {
         const dirPath = path.join(__dirname, '..', 'uploads', dir);
         if (!fs.existsSync(dirPath)) {
