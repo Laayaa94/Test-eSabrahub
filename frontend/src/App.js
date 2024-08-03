@@ -18,6 +18,7 @@ import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute'; // Impo
 import { AuthProvider } from './Context/AuthContext'; // Import AuthProvider
 import Profile from './Components/Login_Post_Profile/Profile/Profile';
 import ProfilePage from './Pages/ProfilePage';
+import ServiceDetails from './Components/ServicesCompo/ServiceDetails/ServiceDetails';
 
 function App() {
   return (
@@ -43,6 +44,7 @@ function App() {
               <Route path="/places" element={<AttractivePlacesPage />} />
               <Route path="/about" element={<AboutUs />} />
               <Route path="/profile" element={<ProfilePage />} />
+              <Route path="/details/:id" element={<ServiceDetails />} />
             </Routes>
             <Footer />
           </div>

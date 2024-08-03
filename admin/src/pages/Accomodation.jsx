@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { fetchServicesByType, deleteService } from '../ServicesAPI/Api';
+import { fetchServicesByType, deleteService } from '../../../admin/src/ServicesAPI/Api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
-import './ServicesAdmin.css'; // Import CSS file
 
 function Accommodation() {
     const [services, setServices] = useState([]);
