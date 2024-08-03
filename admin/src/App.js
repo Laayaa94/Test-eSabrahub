@@ -3,12 +3,12 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import NavBar from './Components/NavBar/NavBar'; // Adjust the path as necessary
 
 import AttractivePlaces from './pages/AttractivePlaces';
-import CreatePost from './Components/CreatePost/CreatePost';
 import Accomodation from './pages/Accomodation';
 import Foods from './pages/Foods';
 import Medicine from './pages/Medicine';
 import Transport from './pages/Transport';
 import Main from './pages/Main';
+import EditService from './Components/EditService/EditService';
 
 function App() {
   return (
@@ -21,7 +21,8 @@ function App() {
           <Route path="/transport" element={<Transport />} />
           <Route path="/medical-centers" element={<Medicine />} />
           <Route path="/attractive-places" element={<AttractivePlaces />} />
-          <Route path="/" element={<Main/>} />
+          <Route path="/edit/:id" element={<EditService />} /> {/* Edit page route */}
+          <Route path="/" element={<Main />} />
         </Routes>
       </div>
     </Router>

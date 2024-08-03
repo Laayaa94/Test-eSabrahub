@@ -78,7 +78,6 @@ const getServiceById = async (req, res) => {
     }
 };
 
-// Update a service
 const updateService = async (req, res) => {
     try {
         const { id } = req.params;
@@ -98,10 +97,14 @@ const updateService = async (req, res) => {
         service.serviceType = serviceType || service.serviceType;
 
         // Handle file upload
-        if (req.files.mainPhoto) {
+        if (req.files && req.files.mainPhoto) {
             // Delete old file if exists
             if (service.mainPhoto) {
-                fs.unlinkSync(path.join(__dirname, '..', 'uploads', 'mainphotos', service.mainPhoto));
+                try {
+                    fs.unlinkSync(path.join(__dirname, '..', 'uploads', 'mainphotos', service.mainPhoto));
+                } catch (err) {
+                    console.error('Error deleting old file:', err);
+                }
             }
             service.mainPhoto = req.files.mainPhoto[0].filename; // Save the new filename
         }
@@ -115,7 +118,6 @@ const updateService = async (req, res) => {
         res.status(500).json({ message: 'Error updating service', error: error.message });
     }
 };
-
 
 // Get services by postType
 const getServicesByPostType = async (req, res) => {
