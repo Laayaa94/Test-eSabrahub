@@ -4,9 +4,11 @@ const cors = require('cors');
 const dotenv = require('dotenv');
 const path = require('path');
 const fs = require('fs');
+const nodemailer = require('nodemailer');
 const bodyParser = require('body-parser');
 const multer = require('multer');
 const userRoutes = require('./Routes/Auth');
+const contactRoutes = require('./Routes/ContactRoutes');
 const postRoutes = require('./Routes/PostRoutes');
 const serviceRoute = require('./Routes/ServiceRoutes');
 const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute'); 
@@ -14,6 +16,7 @@ const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute');
 dotenv.config();
 
 const app = express();
+
 
 // Middleware
 app.use(cors());
@@ -59,6 +62,7 @@ app.use('/api/users', userRoutes);
 app.use('/api/posts', postRoutes);
 app.use('/api/service', serviceRoute);
 app.use('/api/extraphotos',serviceExtraPhotosRoute ); 
+app.use('/api/contact', contactRoutes);
 
 // MongoDB Connection
 mongoose.connect(`mongodb+srv://prabodaharshani95:Mongo94@esabratest.vocqobw.mongodb.net/esabra`, {
@@ -78,6 +82,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 db.once('open', () => {
   console.log('Connected to MongoDB');
 });
+
 
 // Error handling middleware
 app.use((err, req, res, next) => {
