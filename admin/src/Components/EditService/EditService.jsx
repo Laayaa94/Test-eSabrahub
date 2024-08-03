@@ -10,9 +10,11 @@ const EditService = () => {
     location: '',
     description: '',
     serviceType: '',
-    mainPhoto: null
+    mainPhoto: null,
+    extraPhotos: []
   });
   const [file, setFile] = useState(null);
+  const [extraFiles, setExtraFiles] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -38,6 +40,10 @@ const EditService = () => {
     setFile(e.target.files[0]);
   };
 
+  const handleExtraFileChange = (e) => {
+    setExtraFiles([...e.target.files]);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -55,7 +61,41 @@ const EditService = () => {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
       alert('Service updated successfully');
-      navigate('/accommodation'); // Navigate to /accommodation after successful update
+      
+      // Update extra photos
+      if (extraFiles.length > 0) {
+        const extraPhotosData = new FormData();
+        extraFiles.forEach((file) => {
+          extraPhotosData.append('extraPhotos', file);
+        });
+
+        await axios.put(`http://localhost:5000/api/extraphotos/${id}`, extraPhotosData, {
+          headers: { 'Content-Type': 'multipart/form-data' }
+        });
+        alert('Extra photos updated successfully');
+      }
+      
+      // Navigate based on serviceType
+      switch (service.serviceType) {
+        case 'accommodation':
+          navigate('/accommodation');
+          break;
+        case 'transport':
+          navigate('/transport');
+          break;
+        case 'food':
+          navigate('/food-shop');
+          break;
+        case 'medical':
+          navigate('/medical-centers');
+          break;
+        case 'attractiveplaces':
+          navigate('/attractive-places');
+          break;
+        default:
+          navigate('/');
+          break;
+      }
     } catch (error) {
       console.error('Error updating service:', error);
       alert('Error updating service');
@@ -109,6 +149,15 @@ const EditService = () => {
             type="file"
             accept="image/*"
             onChange={handleFileChange}
+          />
+        </div>
+        <div>
+          <label>Extra Photos:</label>
+          <input
+            type="file"
+            accept="image/*"
+            multiple
+            onChange={handleExtraFileChange}
           />
         </div>
         <button type="submit">Update Service</button>
