@@ -32,7 +32,7 @@ function App() {
               <Route path="/login" element={<LoginSignupPage />} />
               
               <Route element={<ProtectedRoute />}>
-                <Route path="/chat" element={<ChatPage />} />
+                <Route path="/chat/:userId" element={<ChatPage />} />
                 <Route path="/posts" element={<PostPage />} />
               </Route>
 
@@ -45,6 +45,7 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/details/:id" element={<ServiceDetails />} />
+
             </Routes>
             <Footer />
           </div>

@@ -1,7 +1,8 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHeart, faComment, faMessage, faMapMarkerAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { faHeart, faMessage, faMapMarkerAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from 'react-router-dom';
 import './Posts.css';
 
 const Posts = () => {
@@ -10,17 +11,15 @@ const Posts = () => {
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
 
-  // Fetch and sort posts by creation time
   const fetchPosts = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/posts');
-      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by creation time
+      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
       setPosts(sortedPosts);
 
-      // Initialize likedPosts state
       const initialLikedPosts = {};
       response.data.forEach(post => {
-        initialLikedPosts[post._id] = post.likes.some(like => like.userId === 'currentUserId'); // Adjust 'currentUserId' as needed
+        initialLikedPosts[post._id] = post.likes.some(like => like.userId === 'currentUserId');
       });
       setLikedPosts(initialLikedPosts);
     } catch (err) {
@@ -60,15 +59,20 @@ const Posts = () => {
   };
 
   const handleNewPost = (newPost) => {
-    setPosts(prevPosts => [newPost, ...prevPosts]); // Add the new post to the top
+    setPosts(prevPosts => [newPost, ...prevPosts]);
   };
 
-  const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes ,caption}) => {
+  const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes, caption }) => {
+    const navigate = useNavigate();  // Get the navigate function from useNavigate
     const userName = user?.username || 'Unknown User';
     const userProfile = user?.profileImage || 'https://via.placeholder.com/50';
 
     const likeCount = Array.isArray(likes) ? likes.length : likes;
     const isLiked = likedPosts[_id] || false;
+
+    const handleChatApp = (userId) => {
+      navigate(`/chat/${userId}`);  // Navigate to the chat page with the user's ID
+    };
 
     const renderMedia = () => (
       <>
@@ -125,11 +129,7 @@ const Posts = () => {
               <FontAwesomeIcon icon={faHeart} className={`like-icon ${isLiked ? 'liked' : ''}`} />
               <span className="likes-count">{likeCount} Likes</span>
             </div>
-            <div className="post-actions-icons-div">
-              <FontAwesomeIcon icon={faComment} className="comment-icon" />
-              <span className="comments-count">15 Comments</span>
-            </div>
-            <div className="post-actions-icons-div">
+            <div className="post-actions-icons-div" onClick={() => handleChatApp(user._id)}>
               <FontAwesomeIcon icon={faMessage} className="share-icon" />
               <span className="likes-count">Chat</span>
             </div>
@@ -164,4 +164,3 @@ const Posts = () => {
 };
 
 export default Posts;
-
