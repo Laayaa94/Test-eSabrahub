@@ -14,11 +14,12 @@ import MedicinePage from './Pages/Services/MedicinePage';
 import TransportPage from './Pages/Services/TransportPage';
 import AboutUs from './Components/HomePageCompo/AboutUs/AboutUs';
 import Footer from './Components/HomePageCompo/Footer/Footer';
-import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute'; // Import ProtectedRoute
-import { AuthProvider } from './Context/AuthContext'; // Import AuthProvider
+import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute'; 
+import { AuthProvider } from './Context/AuthContext'; 
 import Profile from './Components/Login_Post_Profile/Profile/Profile';
 import ProfilePage from './Pages/ProfilePage';
 import ServiceDetails from './Components/ServicesCompo/ServiceDetails/ServiceDetails';
+import ChatDisplay from './Components/ChatAppCompo/Chat Display/ChatDisplay';
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
               
               <Route element={<ProtectedRoute />}>
                 <Route path="/chat/:userId" element={<ChatPage />} />
+                <Route path="/chat/:conversationId" element={<ChatDisplay />} />
                 <Route path="/posts" element={<PostPage />} />
               </Route>
 

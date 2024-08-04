@@ -11,15 +11,19 @@ const Posts = () => {
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
 
+  const navigate = useNavigate(); // Initialize useNavigate
+
+  // Fetch and sort posts by creation time
   const fetchPosts = useCallback(async () => {
     try {
       const response = await axios.get('http://localhost:5000/api/posts');
-      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+      const sortedPosts = response.data.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt)); // Sort by creation time
       setPosts(sortedPosts);
 
+      // Initialize likedPosts state
       const initialLikedPosts = {};
       response.data.forEach(post => {
-        initialLikedPosts[post._id] = post.likes.some(like => like.userId === 'currentUserId');
+        initialLikedPosts[post._id] = post.likes.some(like => like.userId === 'currentUserId'); // Adjust 'currentUserId' as needed
       });
       setLikedPosts(initialLikedPosts);
     } catch (err) {
@@ -59,20 +63,28 @@ const Posts = () => {
   };
 
   const handleNewPost = (newPost) => {
-    setPosts(prevPosts => [newPost, ...prevPosts]);
+    setPosts(prevPosts => [newPost, ...prevPosts]); // Add the new post to the top
+  };
+
+  const handleChat = async (userId, postId) => {
+    try {
+      // Step 1: Get or create a conversation for the given post
+      const conversationResponse = await axios.get(`http://localhost:5000/api/chat/conversation/${postId}`);
+      const conversationId = conversationResponse.data._id;
+  
+      // Step 2: Navigate to the chat page with the user ID
+      navigate(`/chat/${userId}`);
+    } catch (err) {
+      console.error('Error handling chat:', err);
+    }
   };
 
   const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes, caption }) => {
-    const navigate = useNavigate();  // Get the navigate function from useNavigate
     const userName = user?.username || 'Unknown User';
     const userProfile = user?.profileImage || 'https://via.placeholder.com/50';
 
     const likeCount = Array.isArray(likes) ? likes.length : likes;
     const isLiked = likedPosts[_id] || false;
-
-    const handleChatApp = (userId) => {
-      navigate(`/chat/${userId}`);  // Navigate to the chat page with the user's ID
-    };
 
     const renderMedia = () => (
       <>
@@ -129,7 +141,7 @@ const Posts = () => {
               <FontAwesomeIcon icon={faHeart} className={`like-icon ${isLiked ? 'liked' : ''}`} />
               <span className="likes-count">{likeCount} Likes</span>
             </div>
-            <div className="post-actions-icons-div" onClick={() => handleChatApp(user._id)}>
+            <div className="post-actions-icons-div" onClick={() => handleChat(user._id, _id)}>
               <FontAwesomeIcon icon={faMessage} className="share-icon" />
               <span className="likes-count">Chat</span>
             </div>

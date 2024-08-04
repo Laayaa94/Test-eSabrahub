@@ -12,7 +12,7 @@ const contactRoutes = require('./Routes/ContactRoutes');
 const postRoutes = require('./Routes/PostRoutes');
 const serviceRoute = require('./Routes/ServiceRoutes');
 const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute'); 
-
+const ChatRoutes=require('./Routes/ChatRoutes')
 dotenv.config();
 
 const app = express();
@@ -63,6 +63,7 @@ app.use('/api/posts', postRoutes);
 app.use('/api/service', serviceRoute);
 app.use('/api/extraphotos',serviceExtraPhotosRoute ); 
 app.use('/api/contact', contactRoutes);
+app.use('/api/chat', ChatRoutes);
 
 // MongoDB Connection
 mongoose.connect(`mongodb+srv://prabodaharshani95:Mongo94@esabratest.vocqobw.mongodb.net/esabra`, {

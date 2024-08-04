@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faUser, faPen } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser, faPen, faMessage } from '@fortawesome/free-solid-svg-icons';
 import Modal from 'react-modal';
 import { useNavigate, useLocation } from 'react-router-dom';
 import CreatePost from '../CreatePost/CreatePost';
+import { useAuth } from '../../../Context/AuthContext'; // Adjust the import path as needed
 import './CreatePostNavBar.css';
 
 // Set the app element for accessibility
@@ -13,6 +14,7 @@ const CreatePostNavBar = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
+  const { authState } = useAuth(); // Access the authenticated user's state
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -38,6 +40,23 @@ const CreatePostNavBar = () => {
     }
   };
 
+  const navigateToChat = () => {
+    if (authState.user) {
+      console.log('Authenticated User:', authState.user); // Log user data for debugging
+      const userId = authState.user.id || authState.user._id; // Adjust according to user object structure
+
+      if (userId) {
+        navigate(`/chat/${userId}`);
+      } else {
+        console.error('User ID is undefined');
+        // Optionally, handle the error, e.g., display a message to the user
+      }
+    } else {
+      console.error('User is not authenticated');
+      // Optionally, redirect to a login page or show an error message
+    }
+  };
+
   return (
     <>
       <nav className="create-post-nav">
@@ -55,6 +74,11 @@ const CreatePostNavBar = () => {
           <li>
             <button className="nav-button" onClick={scrollToTopOrNavigate}>
               <FontAwesomeIcon icon={faHome} />
+            </button>
+          </li>
+          <li>
+            <button className="nav-button" onClick={navigateToChat}>
+              <FontAwesomeIcon icon={faMessage} />
             </button>
           </li>
         </ul>

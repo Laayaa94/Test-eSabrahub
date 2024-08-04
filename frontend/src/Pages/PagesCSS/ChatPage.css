@@ -1,0 +1,20 @@
+/* ChatPage.css */
+.chat-page-container {
+    display: flex;
+    height: 95vh; /* Adjust if needed */
+  }
+  
+  .chatlist-container {
+    width: 30%;
+    border-right: 1px solid #ccc;
+    overflow-y: auto;
+    background-color: #f9f9f9;
+  }
+  
+  .chat-display-container {
+    width: 70%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
