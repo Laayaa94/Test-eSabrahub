@@ -1,9 +1,8 @@
 const mongoose = require('mongoose');
-const User = require('../Models/User');
 const Post = require('../Models/Post');
 const fs = require('fs');
 const path = require('path');
-
+const axios = require('axios');
 
 const ensureUploadDirsExist = () => {
   const photoDir = path.join(__dirname, '..', 'uploads', 'photos');
@@ -29,11 +28,30 @@ const createPost = async (req, res) => {
       return res.status(400).json({ message: 'Invalid post type. Must be "text" or "media".' });
     }
 
+    let coordinates = { lat: null, lng: null };
+    if (location) {
+      // Get coordinates from Google Maps Geocoding API
+      const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
+        params: {
+          address: location,
+          key: process.env.GOOGLE_MAPS_API_KEY,
+        },
+      });
+
+      if (response.data.results.length > 0) {
+        const { lat, lng } = response.data.results[0].geometry.location;
+        coordinates = { lat, lng };
+      } else {
+        return res.status(400).json({ error: 'Location not found' });
+      }
+    }
+
     const post = new Post({
       text,
       photos,
       videos,
       location,
+      coordinates,
       caption,
       backgroundColor,
       postType,
@@ -140,8 +158,6 @@ const updatePost = async (req, res) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
-module.exports = { updatePost };
 
 const deletePost = async (req, res) => {
   try {

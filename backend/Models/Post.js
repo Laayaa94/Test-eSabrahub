@@ -4,7 +4,11 @@ const PostSchema = new mongoose.Schema({
     text: String,
     photos: [String],
     videos: [String],
-    location: String,
+    location: String, 
+    coordinates: { 
+        lat: Number,
+        lng: Number
+    },
     caption: String,
     backgroundColor: String,
     postType: {
