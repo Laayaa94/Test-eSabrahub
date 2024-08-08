@@ -15,6 +15,14 @@ const ProfileMiddle = () => {
   const [error, setError] = useState(null);
   const [editPost, setEditPost] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
+  const [userData, setUserData] = useState({
+    profileImage:'/uploads/profiles/profile.jpg', // Set default image initially
+    username: '',
+    description: '',
+    email: '',
+    address: '',
+    contactNumber: '',
+  });
 
   const fetchPosts = useCallback(async () => {
     if (!authState || !authState.user) {
@@ -52,6 +60,59 @@ const ProfileMiddle = () => {
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);
+
+  
+  // Fetch user details on component mount
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        console.log('Fetching user data');
+        const response = await axios.get('http://localhost:5000/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${authState.token}`, // Use the token from AuthContext
+          },
+        });
+        console.log('User data fetched:', response.data);
+        setUserData({
+          ...response.data,
+          profileImage: response.data.profileImage || '/uploads/profiles/profile.jpg', // Set fallback image if not provided
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
+    fetchPosts();
+  }, [authState.token, fetchPosts]);
+
+  // Construct the image URL based on the backend path
+  const getProfileImageUrl = () => {
+    if (userData.profileImage instanceof File) {
+      const objectURL = URL.createObjectURL(userData.profileImage);
+      console.log('Generated object URL for file:', objectURL);
+      return objectURL;
+    }
+
+    const imageUrl = userData.profileImage
+      ? `http://localhost:5000${userData.profileImage}`
+      : '/uploads/profiles/profile.jpg';
+    console.log('Using profile image URL:', imageUrl);
+    return imageUrl;
+  };
+
+  // Clean up URL.createObjectURL resources
+  useEffect(() => {
+    if (userData.profileImage instanceof File) {
+      const objectURL = getProfileImageUrl();
+      return () => {
+        console.log('Revoking object URL:', objectURL);
+        URL.revokeObjectURL(objectURL);
+      };
+    }
+  }, [userData.profileImage]);
+
 
   const handleEditPost = async (updatedPost) => {
     try {
@@ -141,12 +202,16 @@ const ProfileMiddle = () => {
         ))}
       </>
     );
-
+    
     return (
       <div className="post">
         <div className="post-header">
-          <img src={userProfile} alt="User Profile" className="user-profile" />
-          <div className="user-info">
+        <img
+          src={ getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
+          alt="Profile"
+          className="user-profile"
+        /> 
+                  <div className="user-info">
             <span className="user-name">{userName}</span>
           </div>
           {location && (
@@ -182,14 +247,7 @@ const ProfileMiddle = () => {
               <FontAwesomeIcon icon={faHeart} className={`like-icon ${isLiked ? 'liked' : ''}`} />
               <span className="likes-count">{likeCount} Likes</span>
             </div>
-            <div className="post-actions-icons-div">
-              <FontAwesomeIcon icon={faComment} className="comment-icon" />
-              <span className="comments-count">15 Comments</span>
-            </div>
-            <div className="post-actions-icons-div">
-              <FontAwesomeIcon icon={faMessage} className="share-icon" />
-              <span className="likes-count">Chat</span>
-            </div>
+          
           </div>
         </div>
       </div>

@@ -118,8 +118,8 @@ const Profile = () => {
    
     // Construct the image URL based on the backend path
     const imageUrl = userData.profileImage
-      ? `http://localhost:5000${userData.profileImage}` // Ensure that the URL is correctly formed
-      :'/uploads/profiles/profile.jpg'; // Fallback to default image
+      ? `http://localhost:5000${userData.profileImage}` 
+      :'/uploads/profiles/profile.jpg'; 
     console.log('Using profile image URL:', imageUrl);
     return imageUrl;
   };

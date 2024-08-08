@@ -18,19 +18,19 @@ const userSchema = new mongoose.Schema({
   },
   description: {
     type: String,
-    default: '', // Default to an empty string if not provided
+    default: '', 
   },
   profileImage: {
-    type: String, // URL or path to the profile image
-    default: '', // Default to an empty string if not provided
+    type: String, 
+    default: '', 
   },
   address: {
     type: String,
-    default: '', // Default to an empty string if not provided
+    default: '', 
   },
   contactNumber: {
     type: String,
-    default: '', // Default to an empty string if not provided
+    default: '', 
   }
 });
 

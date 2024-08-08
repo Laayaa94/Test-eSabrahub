@@ -4,12 +4,22 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHeart, faMessage, faMapMarkerAlt, faUserPlus } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import './Posts.css';
+import { useAuth } from '../../../Context/AuthContext'; // Adjust the path as needed
 
 const Posts = () => {
+  const { authState } = useAuth();
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
+  const [userData, setUserData] = useState({
+    profileImage:'/uploads/profiles/profile.jpg', // Set default image initially
+    username: '',
+    description: '',
+    email: '',
+    address: '',
+    contactNumber: '',
+  });
 
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -33,9 +43,56 @@ const Posts = () => {
     }
   }, []);
 
+  // Fetch user details on component mount
   useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        console.log('Fetching user data');
+        const response = await axios.get('http://localhost:5000/api/users/profile', {
+          headers: {
+            Authorization: `Bearer ${authState.token}`, // Use the token from AuthContext
+          },
+        });
+        console.log('User data fetched:', response.data);
+        setUserData({
+          ...response.data,
+          profileImage: response.data.profileImage || '/uploads/profiles/profile.jpg', // Set fallback image if not provided
+        });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchUserData();
     fetchPosts();
-  }, [fetchPosts]);
+  }, [authState.token, fetchPosts]);
+
+  // Construct the image URL based on the backend path
+  const getProfileImageUrl = () => {
+    if (userData.profileImage instanceof File) {
+      const objectURL = URL.createObjectURL(userData.profileImage);
+      console.log('Generated object URL for file:', objectURL);
+      return objectURL;
+    }
+
+    const imageUrl = userData.profileImage
+      ? `http://localhost:5000${userData.profileImage}`
+      : '/uploads/profiles/profile.jpg';
+    console.log('Using profile image URL:', imageUrl);
+    return imageUrl;
+  };
+
+  // Clean up URL.createObjectURL resources
+  useEffect(() => {
+    if (userData.profileImage instanceof File) {
+      const objectURL = getProfileImageUrl();
+      return () => {
+        console.log('Revoking object URL:', objectURL);
+        URL.revokeObjectURL(objectURL);
+      };
+    }
+  }, [userData.profileImage]);
 
   const handleLike = async (postId) => {
     if (!postId) {
@@ -109,8 +166,12 @@ const Posts = () => {
     return (
       <div className="post">
         <div className="post-header">
-          <img src={userProfile} alt="User Profile" className="user-profile" />
-          <div className="user-info">
+        <img
+          src={ getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
+          alt="Profile"
+          className="user-profile"
+        />          
+        <div className="user-info">
             <span className="user-name">{userName}</span>
           </div>
           {location && (
