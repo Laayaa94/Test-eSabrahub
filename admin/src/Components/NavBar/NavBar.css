@@ -5,7 +5,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    background-color: #333;
+    background-color:#151414;
     overflow-x: hidden;
     transition: 0.5s;
     padding-top: 60px;
@@ -13,16 +13,16 @@
   }
   
   .sidenav a {
-    padding: 8px 8px 8px 32px;
+    padding: 8px 8px 38px 32px;
     text-decoration: none;
-    font-size: 25px;
-    color: #fff;
+    font-size: 17.5px;
+    color: #e1ded2;
     display: block;
     transition: 0.3s;
   }
   
   .sidenav a:hover {
-    color: #ddd;
+    color: #dd7413;
   }
   
   .sidenav .close-btn {
@@ -32,12 +32,13 @@
     font-size: 36px;
     margin-left: 50px;
     color: #fff;
+    display: none;
   }
   
   .open-btn {
     font-size: 20px;
     background-color: #333;
-    color: #fff;
+    color: #e12d2d;
     border: none;
     cursor: pointer;
     position: fixed;
@@ -45,10 +46,26 @@
     left: 10px;
     padding: 10px;
     z-index: 1001;
+    display: none;
   }
   
   .sidenav.open {
     width: 250px; /* Adjust width as needed */
   }
   
+  @media(max-width:1000px){
+    .open-btn{
+      display: block;
+    }
+    .sidenav .close-btn {
+     display: block;
+    }
+    .sidenav{
+      width: 0;
+    }
+    .sidenav.sidenav.open{
+      width: 250px;
+    }
+    
+  }
   
