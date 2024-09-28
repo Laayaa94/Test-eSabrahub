@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import './ExtraPhotos.css'; // Make sure to import your CSS file
 
 const ExtraPhotos = ({ serviceId }) => {
     const [files, setFiles] = useState([]);
@@ -45,19 +46,45 @@ const ExtraPhotos = ({ serviceId }) => {
         }
     };
 
-    return (
-        <div>
-            <h2>Upload Extra Photos</h2>
-            <form onSubmit={handleSubmit}>
-                <input
-                    type="file"
-                    multiple
-                    onChange={handleFileChange}
+    // Function to generate image previews
+    const renderImagePreviews = () => {
+        const imageArray = Array.from(files);
+        return imageArray.map((file, index) => {
+            const imageUrl = URL.createObjectURL(file);
+            return (
+                <img
+                    key={index}
+                    src={imageUrl}
+                    alt="Preview"
+                    className="image-preview"
                 />
+            );
+        });
+    };
+
+    return (
+        <div className="extra-photos-container">
+            <h2>Upload Extra Photos</h2>
+            <form className="extra-photos-form" onSubmit={handleSubmit}>
+                <label className="custom-file-upload">
+                    <input
+                        type="file"
+                        multiple
+                        onChange={handleFileChange}
+                    />
+                    <span className="upload-icon" /> {/* You can replace this with an actual image or icon */}
+                    <p>Select Images</p>
+                </label>
+                
+                {/* Display image previews below the label */}
+                <div className="preview-images-container">
+                    {renderImagePreviews()}
+                </div>
+
                 <button type="submit">Upload</button>
             </form>
-            {message && <p>{message}</p>}
-            {error && <p style={{ color: 'red' }}>{error}</p>}
+            {message && <p className="extra-photos-message">{message}</p>}
+            {error && <p className="extra-photos-error">{error}</p>}
         </div>
     );
 };
