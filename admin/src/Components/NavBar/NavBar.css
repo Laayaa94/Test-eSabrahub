@@ -1,4 +1,5 @@
 /* Basic styles for the side navbar */
+
 .sidenav {
     height: 100%;
     width: 0;
@@ -26,19 +27,24 @@
   }
   
   .sidenav .close-btn {
+    background-color: transparent;
+    border: none;
+    outline: none;
     position: absolute;
-    top: 0;
+    top: 15px;
     right: 25px;
     font-size: 36px;
     margin-left: 50px;
-    color: #fff;
+    color: #dd7413;
+    cursor: pointer;
     display: none;
   }
   
   .open-btn {
     font-size: 20px;
-    background-color: #333;
-    color: #e12d2d;
+    background-color: transparent;
+    color: #dd7413;
+    font-weight: 900;
     border: none;
     cursor: pointer;
     position: fixed;

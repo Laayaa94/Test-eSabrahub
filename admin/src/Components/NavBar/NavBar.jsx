@@ -12,7 +12,7 @@ const NavBar = () => {
   return (
     <>
       <button className="open-btn" onClick={toggleSideNav}>
-        &#9776; {/* This is the hamburger icon */}
+        &#9776; 
       </button>
       <div className={`sidenav ${isOpen ? 'open' : ''}`}>
         <button className="close-btn" onClick={toggleSideNav}>

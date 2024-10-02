@@ -1,9 +1,11 @@
 /* ServicesAdmin.css */
-.table h1{
+.table h1 {
+  text-align: center;
   color: #dd7413;
   font-size: 20px;
   font-weight: 700;
 }
+
 .servicesTable {
   width: 100%;
   border-collapse: collapse;
@@ -42,13 +44,13 @@
   white-space: normal;  
   word-wrap: break-word; 
 }
+
 tbody tr {
   transition: background-color 0.3s; 
 }
 
 tbody tr:hover {
   background-color: #dd751392;
-
 }
 
 /* Table column specific widths */
@@ -86,4 +88,285 @@ tbody tr:hover {
 .extraPhotosContainer {
   max-height: 450px; /* Set max height for extra photos */
   overflow-y: auto; /* Add vertical scrollbar if overflow */
+}
+
+/* Media Queries */
+@media (max-width: 1000px) {
+  .servicesTable th,
+  .servicesTable td {
+    padding: 8px; /* Reduce padding for smaller screens */
+  }
+
+  .servicesTable th {
+    font-size: 12px; /* Smaller font size for headers */
+  }
+
+  .servicesTable td {
+    font-size: 12px; /* Smaller font size for table cells */
+  }
+
+  /* Adjust column widths for smaller screens */
+  .servicesTable th:nth-child(1),
+  .servicesTable td:nth-child(1) {
+    width: 90px; 
+  }
+
+  .servicesTable th:nth-child(2),
+  .servicesTable td:nth-child(2) {
+    width: 180px; 
+  }
+
+  .servicesTable th:nth-child(3),
+  .servicesTable td:nth-child(3) {
+    width: 130px; 
+  }
+
+  .servicesTable th:nth-child(4),
+  .servicesTable td:nth-child(4) {
+    width: 130px; 
+  }
+
+  .servicesTable th:nth-child(5),
+  .servicesTable td:nth-child(5) {
+    width: 320px; 
+  }
+
+  .servicesTable th:nth-child(6),
+  .servicesTable td:nth-child(6) {
+    width: 90px; 
+  }
+
+  /* Make the table responsive */
+  .servicesTable {
+    display: block; /* Make table a block element */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent text wrapping */
+  }
+
+  /* Adjust description max width */
+  .description {
+    max-width: 100%; /* Allow full width on smaller screens */
+  }
+}
+
+@media (max-width: 800px) {
+  .servicesTable th,
+  .servicesTable td {
+    padding: 6px; /* Further reduce padding */
+  }
+
+  .servicesTable th {
+    font-size: 10px; /* Smaller font size for headers */
+  }
+
+  .servicesTable td {
+    font-size: 10px; /* Smaller font size for table cells */
+  }
+
+  /* Adjust column widths further for 800px screens */
+  .servicesTable th:nth-child(1),
+  .servicesTable td:nth-child(1) {
+    width: 80px; 
+  }
+
+  .servicesTable th:nth-child(2),
+  .servicesTable td:nth-child(2) {
+    width: 160px; 
+  }
+
+  .servicesTable th:nth-child(3),
+  .servicesTable td:nth-child(3) {
+    width: 110px; 
+  }
+
+  .servicesTable th:nth-child(4),
+  .servicesTable td:nth-child(4) {
+    width: 110px; 
+  }
+
+  .servicesTable th:nth-child(5),
+  .servicesTable td:nth-child(5) {
+    width: 280px; 
+  }
+
+  .servicesTable th:nth-child(6),
+  .servicesTable td:nth-child(6) {
+    width: 80px; 
+  }
+}
+
+@media (max-width: 700px) {
+  .servicesTable th,
+  .servicesTable td {
+    padding: 4px; /* Reduce padding for smaller screens */
+  }
+
+  .servicesTable th {
+    font-size: 9px; /* Smaller font size for headers */
+  }
+
+  .servicesTable td {
+    font-size: 9px; /* Smaller font size for table cells */
+  }
+
+  /* Adjust column widths further for 700px screens */
+  .servicesTable th:nth-child(1),
+  .servicesTable td:nth-child(1) {
+    width: 70px; 
+  }
+
+  .servicesTable th:nth-child(2),
+  .servicesTable td:nth-child(2) {
+    width: 140px; 
+  }
+
+  .servicesTable th:nth-child(3),
+  .servicesTable td:nth-child(3) {
+    width: 100px; 
+  }
+
+  .servicesTable th:nth-child(4),
+  .servicesTable td:nth-child(4) {
+    width: 100px; 
+  }
+
+  .servicesTable th:nth-child(5),
+  .servicesTable td:nth-child(5) {
+    width: 240px; 
+  }
+
+  .servicesTable th:nth-child(6),
+  .servicesTable td:nth-child(6) {
+    width: 70px; 
+  }
+}
+
+@media (max-width: 500px) {
+  .servicesTable {
+    font-size: 8px; /* Further reduce font size for very small screens */
+  }
+
+  .servicesTable th,
+  .servicesTable td {
+    padding: 2px; /* Further reduce padding for very small screens */
+  }
+
+  /* Adjust column widths further for 500px screens */
+  .servicesTable th:nth-child(1),
+  .servicesTable td:nth-child(1) {
+    width: 60px; 
+  }
+
+  .servicesTable th:nth-child(2),
+  .servicesTable td:nth-child(2) {
+    width: 120px; 
+  }
+
+  .servicesTable th:nth-child(3),
+  .servicesTable td:nth-child(3) {
+    width: 80px; 
+  }
+
+  .servicesTable th:nth-child(4),
+  .servicesTable td:nth-child(4) {
+    width: 80px; 
+  }
+
+  .servicesTable th:nth-child(5),
+  .servicesTable td:nth-child(5) {
+    width: 200px; 
+  }
+
+  .servicesTable th:nth-child(6),
+  .servicesTable td:nth-child(6) {
+    width: 60px; 
+  }
+}
+
+@media (max-width: 400px) {
+  .servicesTable {
+    font-size: 8px; /* Reduce font size for smaller screens */
+  }
+
+  .servicesTable th,
+  .servicesTable td {
+    padding: 3px; /* Reduce padding */
+  }
+
+  /* Adjust column widths for under 400px screens */
+  .servicesTable th:nth-child(1),
+  .servicesTable td:nth-child(1) {
+    width: 60px; /* Service Image column */
+  }
+
+  .servicesTable th:nth-child(2),
+  .servicesTable td:nth-child(2) {
+    width: 90px; /* Extra Images column */
+  }
+
+  .servicesTable th:nth-child(3),
+  .servicesTable td:nth-child(3) {
+    width: 90px; /* Name column */
+  }
+
+  .servicesTable th:nth-child(4),
+  .servicesTable td:nth-child(4) {
+    width: 90px; /* Location column */
+  }
+
+  .servicesTable th:nth-child(5),
+  .servicesTable td:nth-child(5) {
+    width: 220px; /* Description column */
+  }
+
+  .servicesTable th:nth-child(6),
+  .servicesTable td:nth-child(6) {
+    width: 70px; /* Actions column */
+  }
+}
+
+@media (max-width: 430px) {
+  .servicesTable {
+    display: block; /* Make the table a block element */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: nowrap; /* Prevent text wrapping */
+    font-size: 8px; /* Maintain smaller font size */
+  }
+
+  .servicesTable th,
+  .servicesTable td {
+    padding: 3px; /* Maintain reduced padding */
+  }
+
+  /* Adjust column widths for screens below 390px */
+  .servicesTable th:nth-child(1),
+  .servicesTable td:nth-child(1) {
+    width: 60px; /* Service Image column */
+  }
+
+  .servicesTable th:nth-child(2),
+  .servicesTable td:nth-child(2) {
+    width: 120px; /* Extra Images column */
+    display: none;
+  }
+
+  .servicesTable th:nth-child(3),
+  .servicesTable td:nth-child(3) {
+    width: 80px; /* Name column */
+  }
+
+  .servicesTable th:nth-child(4),
+  .servicesTable td:nth-child(4) {
+    width: 80px; /* Location column */
+  }
+
+  .servicesTable th:nth-child(5),
+  .servicesTable td:nth-child(5) {
+    width: 200px; /* Description column */
+  }
+
+  .servicesTable th:nth-child(6),
+  .servicesTable td:nth-child(6) {
+    width: 60px; /* Actions column */
+  }
 }

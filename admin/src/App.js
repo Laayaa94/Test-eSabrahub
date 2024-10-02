@@ -14,7 +14,7 @@ function App() {
   return (
     <Router>
       <NavBar />
-      <div style={{ marginLeft: '260px', padding: '20px' }}>
+      <div className='app-admin'>
         <Routes>
           <Route path="/accommodation" element={<Accomodation />} />
           <Route path="/food-shop" element={<Foods />} />
