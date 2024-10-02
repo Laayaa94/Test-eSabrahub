@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
+import './EditService.css';
 
 const EditService = () => {
-  const { id } = useParams(); // Get the ID from the route parameters
-  const navigate = useNavigate(); // Hook to programmatically navigate
+  const { id } = useParams(); 
+  const navigate = useNavigate(); 
   const [service, setService] = useState({
     name: '',
     location: '',
@@ -62,7 +63,6 @@ const EditService = () => {
       });
       alert('Service updated successfully');
       
-      // Update extra photos
       if (extraFiles.length > 0) {
         const extraPhotosData = new FormData();
         extraFiles.forEach((file) => {
@@ -75,7 +75,6 @@ const EditService = () => {
         alert('Extra photos updated successfully');
       }
       
-      // Navigate based on serviceType
       switch (service.serviceType) {
         case 'accommodation':
           navigate('/accommodation');
@@ -103,67 +102,73 @@ const EditService = () => {
   };
 
   if (loading) return <p>Loading...</p>;
-
   return (
-    <div>
+    <div className="edit-service-container">
       <h2>Edit Service</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Name:</label>
+      <form className="edit-service-form" onSubmit={handleSubmit}>
+        <div className="form-group">
+          <label className="edit-service-label">Name:</label>
           <input
+            className="edit-service-input" 
             type="text"
             name="name"
             value={service.name}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label>Location:</label>
+        <div className="form-group">
+          <label className="edit-service-label">Location:</label>
           <input
+            className="edit-service-input" 
             type="text"
             name="location"
             value={service.location}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label>Description:</label>
+        <div className="form-group">
+          <label className="edit-service-label">Description:</label>
           <textarea
+            className="edit-service-textarea" 
             name="description"
             value={service.description}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label>Service Type:</label>
+        <div className="form-group">
+          <label className="edit-service-label">Service Type:</label>
           <input
+            className="edit-service-input" 
             type="text"
             name="serviceType"
             value={service.serviceType}
             onChange={handleChange}
           />
         </div>
-        <div>
-          <label>Main Photo:</label>
+        <div className="form-group">
+          <label className="edit-service-label">Main Photo:</label>
           <input
+            className="edit-service-input" 
             type="file"
             accept="image/*"
             onChange={handleFileChange}
           />
         </div>
-        <div>
-          <label>Extra Photos:</label>
+        <div className="form-group">
+          <label className="edit-service-label">Extra Photos:</label>
           <input
+            className="edit-service-input" 
             type="file"
             accept="image/*"
             multiple
             onChange={handleExtraFileChange}
           />
         </div>
-        <button type="submit">Update Service</button>
+        <button className="edit-service-button" type="submit">Update Service</button> {/* Updated button class */}
       </form>
     </div>
   );
+  
 };
 
 export default EditService;

@@ -44,7 +44,7 @@ function Accommodation() {
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <div>
+        <div className='table'>
             <h1>Accommodation Services</h1>
             {services.length > 0 ? (
                 <table className="servicesTable">
@@ -70,7 +70,7 @@ function Accommodation() {
                                 </td>
                                 <td>
                                     {service.extraPhotos && service.extraPhotos.length > 0 ? (
-                                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                        <div className='extraPhotosContainer' style={{ display: 'flex', flexWrap: 'wrap' }}>
                                             {service.extraPhotos.map((photo, index) => (
                                                 <img
                                                     key={index}
@@ -78,7 +78,8 @@ function Accommodation() {
                                                     alt={`Extra ${index}`}
                                                     className="extraPhotoImage"
                                                     style={{ width: '100px', height: 'auto', margin: '5px' }}
-                                                />
+                                                    
+                                                    />
                                             ))}
                                         </div>
                                     ) : (
@@ -87,16 +88,16 @@ function Accommodation() {
                                 </td>
                                 <td>{service.name}</td>
                                 <td>{service.location}</td>
-                                <td>{service.description}</td>
+                                <td className='description'>{service.description}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         icon={faTrash}
-                                        style={{ color: 'red', cursor: 'pointer' }}
+                                        style={{ color: 'tomato', cursor: 'pointer' }}
                                         onClick={() => handleDelete(service._id)}
                                     />
                                     <FontAwesomeIcon
                                         icon={faEdit}
-                                        style={{ color: 'blue', cursor: 'pointer', marginLeft: '10px' }}
+                                        style={{ color: 'black', cursor: 'pointer', marginLeft: '10px' }}
                                         onClick={() => handleEdit(service._id)}
                                     />
                                 </td>

@@ -101,14 +101,14 @@ const CreatePost = () => {
         <button
           className={`post-type-button ${postType === 'text' ? 'active' : ''}`}
           onClick={() => handlePostTypeChange('text')}
-          style={{ backgroundColor: postType === 'text' ? '#dd7413' : '' }} // Yellow if active
+          style={{ backgroundColor: postType === 'text' ? '#dd7413' : '' }} 
         >
           Text Post
         </button>
         <button
           className={`post-type-button ${postType === 'media' ? 'active' : ''}`}
           onClick={() => handlePostTypeChange('media')}
-          style={{ backgroundColor: postType === 'media' ? '#dd7413' : '' }} // Yellow if active
+          style={{ backgroundColor: postType === 'media' ? '#dd7413' : '' }} 
         >
           Media Post
         </button>

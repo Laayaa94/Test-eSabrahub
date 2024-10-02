@@ -44,7 +44,7 @@ function Transport() {
     if (error) return <p>Error: {error}</p>;
 
     return (
-        <div>
+        <div className='table'>
             <h1>Accommodation Services</h1>
             {services.length > 0 ? (
                 <table className="servicesTable">
@@ -70,7 +70,7 @@ function Transport() {
                                 </td>
                                 <td>
                                     {service.extraPhotos && service.extraPhotos.length > 0 ? (
-                                        <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                        <div className='extraPhotosContainer' style={{ display: 'flex', flexWrap: 'wrap' }}>
                                             {service.extraPhotos.map((photo, index) => (
                                                 <img
                                                     key={index}
@@ -87,16 +87,16 @@ function Transport() {
                                 </td>
                                 <td>{service.name}</td>
                                 <td>{service.location}</td>
-                                <td>{service.description}</td>
+                                <td className='description'>{service.description}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         icon={faTrash}
-                                        style={{ color: 'red', cursor: 'pointer' }}
+                                        style={{ color: 'Tomato', cursor: 'pointer' }}
                                         onClick={() => handleDelete(service._id)}
                                     />
                                     <FontAwesomeIcon
                                         icon={faEdit}
-                                        style={{ color: 'blue', cursor: 'pointer', marginLeft: '10px' }}
+                                        style={{ color: 'Black', cursor: 'pointer', marginLeft: '10px' }}
                                         onClick={() => handleEdit(service._id)}
                                     />
                                 </td>

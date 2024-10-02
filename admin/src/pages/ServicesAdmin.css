@@ -1,35 +1,89 @@
+/* ServicesAdmin.css */
+.table h1{
+  color: #dd7413;
+  font-size: 20px;
+  font-weight: 700;
+}
 .servicesTable {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 20px 0;
-  }
-  
-  .servicesTable th,
-  .servicesTable td {
-    border: 1px solid #ddd;
-    padding: 8px;
-    text-align: left;
-  }
-  
-  .servicesTable th {
-    background-color: #f4f4f4;
-  }
-  
-  .servicesTable img {
-    width: 100px;
-    height: auto;
-  }
-  
-  .deleteButton {
-    background: none;
-    border: none;
-    cursor: pointer;
-    color: #dd7413; /* You can use your preferred color */
-    font-size: 1.2em;
-    transition: color 0.3s ease;
-  }
-  
-  .deleteButton:hover {
-    color: #b74430; /* Change color on hover */
-  }
-  
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0;
+}
+
+.servicesTable th,
+.servicesTable td {
+  text-align: left;
+  padding: 10px;
+  border: 1px solid #ddd; 
+  color: rgb(63, 60, 60);
+}
+
+.servicesTable th {
+  background-color: #151414; 
+  color: #e1ded2;
+  font-size: 14px;
+}
+
+.serviceImage {
+  width: 100px; 
+  height: auto;
+}
+
+.extraPhotoImage {
+  width: 100px; 
+  height: auto;
+  margin: 5px 0; 
+}
+
+.description {
+  max-width: 450px;  
+  overflow-x: hidden;  
+  overflow-y: auto;    
+  white-space: normal;  
+  word-wrap: break-word; 
+}
+tbody tr {
+  transition: background-color 0.3s; 
+}
+
+tbody tr:hover {
+  background-color: #dd751392;
+
+}
+
+/* Table column specific widths */
+.servicesTable th:nth-child(1),
+.servicesTable td:nth-child(1) {
+  width: 100px; 
+}
+
+.servicesTable th:nth-child(2),
+.servicesTable td:nth-child(2) {
+  width: 200px; /* Extra Images column */
+}
+
+.servicesTable th:nth-child(3),
+.servicesTable td:nth-child(3) {
+  width: 150px; /* Name column */
+}
+
+.servicesTable th:nth-child(4),
+.servicesTable td:nth-child(4) {
+  width: 150px; /* Location column */
+}
+
+.servicesTable th:nth-child(5),
+.servicesTable td:nth-child(5) {
+  width: 350px; /* Description column */
+}
+
+.servicesTable th:nth-child(6),
+.servicesTable td:nth-child(6) {
+  width: 100px; /* Actions column */
+}
+
+/* Add scrollbar to extra images if necessary */
+.extraPhotosContainer {
+  max-height: 450px; /* Set max height for extra photos */
+  overflow-y: auto; /* Add vertical scrollbar if overflow */
+}

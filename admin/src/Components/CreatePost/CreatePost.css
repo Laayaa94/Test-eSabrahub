@@ -118,7 +118,7 @@
     margin: auto;
     align-items: center;
     justify-content: center;
-    cursor: pointer; /* Indicate that this area is clickable */
+    cursor: pointer; 
   }
   
   .create-post-photo-preview {
