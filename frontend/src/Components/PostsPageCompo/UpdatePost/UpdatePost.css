@@ -209,3 +209,59 @@
     font-style: italic;
   }
   
+
+  @media (max-width: 600px) {
+    .update-post {
+      max-width: 100%; /* Make it full width for smaller screens */
+      max-height: 400px; /* Adjust the height */
+      padding: 20px 15px; /* Adjust the padding for smaller screens */
+    }
+  
+    .text-area-container {
+      width: 100%; /* Make the text area full width */
+    }
+  
+    .caption-container {
+      width: 100%; /* Make the caption container full width */
+    }
+  
+    .background-options {
+      flex-direction: column; /* Stack background options vertically */
+      gap: 5px;
+    }
+  
+    .background-colors button {
+      width: 25px;
+      height: 25px; /* Adjust size for smaller screens */
+    }
+  
+    .post-type-selector {
+      flex-direction: column; /* Stack post type buttons vertically */
+      margin-bottom: 15px; /* Reduce the margin */
+    }
+  
+    .post-type-button {
+      margin: 5px 0; /* Adjust margin for smaller screens */
+      padding: 8px 15px; /* Adjust button padding */
+    }
+  
+    .media-buttons {
+      gap: 5px; /* Reduce gap between media buttons */
+    }
+  
+    .media-button {
+      width: 35px;
+      height: 35px; /* Reduce the size of media buttons */
+    }
+  
+    .photo-preview img,
+    .video-preview video {
+      max-height: 150px; /* Reduce the preview height */
+    }
+  
+    .create-post button[type="submit"] {
+      font-size: 11px; /* Adjust font size for smaller screens */
+      padding: 8px; /* Adjust button padding */
+    }
+  }
+  

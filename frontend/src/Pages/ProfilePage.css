@@ -5,7 +5,6 @@
 .profilepage-leftpane{
     flex: 2;
     height: 95vh;
-    background-color: antiquewhite;
    
 }
 .profilepage-middlepage{
@@ -13,4 +12,10 @@
 }
 .profilepage-rightpage{
     flex: 2;
+}
+
+@media(max-width:1000px){
+    .profilePage-container-three-parts{
+        flex-direction: column;
+    }
 }

@@ -34,6 +34,7 @@
 .user-name {
   font-weight: bold;
   margin-right: 8px;
+  color: #151414;
 }
 
 .follow-icon {
@@ -50,12 +51,14 @@
 
 .location-icon {
   margin-right: 8px;
+  color: green;
 }
 
 .location-name {
   font-weight: bold;
   margin-right: 28px;
   font-size: 14px;
+  color: green;
 }
 
 .text-post {

@@ -222,7 +222,6 @@ const UpdatePost = ({ post, onClose, onSave = () => {} }) => {
         )}
 
         <button type="submit" className="submit-button">Update Post</button>
-        <button type="button" className="cancel-button" onClick={onClose}>Cancel</button>
       </form>
     </div>
   );

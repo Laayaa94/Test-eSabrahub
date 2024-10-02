@@ -1,6 +1,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faEnvelope, faPhone, faEdit } from '@fortawesome/free-solid-svg-icons';
 
 import './Profile.css';
 import { useAuth } from '../../../Context/AuthContext'; // Adjust the path as needed
@@ -141,33 +143,33 @@ const Profile = () => {
 
   return (
     <div className="profilepage-container">
-      <div className="left-pane">
+      <div className='top-profile'>
+      <div className='profile-img-name-des'>
+      <div>
         <img
-          src={ getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
-          alt="Profile"
-          className="profile-image"
-        />
+            src={ getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
+            alt="Profile"
+            className="profile-image"
+          />
+      </div>
         <div>
-          <strong>Username:</strong>
-          <p>{userData.username || 'No username available'}</p>
+          <h2>{userData.username || 'No username available'}</h2>
         </div>
         <div>
-          <strong>Description:</strong>
           <p>{userData.description || 'No description available'}</p>
         </div>
-        <div>
-          <strong>Email:</strong>
-          <p>{userData.email || 'No email provided'}</p>
+       </div>
+        <div className='profile-address-pn'>
+          <p><FontAwesomeIcon icon={faHome} className='profileFontAswsomeicon' />{userData.address || 'No address provided'}</p>
+
+          <p><FontAwesomeIcon icon={faEnvelope} className='profileFontAswsomeicon'/>{userData.email || 'No email provided'}</p>
+        
+          <p><FontAwesomeIcon icon={faPhone} className='profileFontAswsomeicon' />{userData.contactNumber || 'No contact number provided'}</p>
+
         </div>
-        <div>
-          <strong>Address:</strong>
-          <p>{userData.address || 'No address provided'}</p>
-        </div>
-        <div>
-          <strong>Contact Number:</strong>
-          <p>{userData.contactNumber || 'No contact number provided'}</p>
-        </div>
-        <button onClick={openModal}>Edit Details</button>
+      
+        <button onClick={openModal}><FontAwesomeIcon icon={faEdit} className='profileFontAswsomeicon-btn' />Edit Details</button>
+     
       </div>
 
       <Modal
