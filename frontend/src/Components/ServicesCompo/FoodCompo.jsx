@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {  faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { fetchServicesByType } from './Api';
 
@@ -56,8 +58,8 @@ const FoodCompo = () => {
                className="service-main-photo"
              />
              <h2>{service.name}</h2>
-             <p>Location: {service.location}</p>
-           </div>
+             < p className='services-location-icon-for-all'> <FontAwesomeIcon icon={faMapMarkerAlt} /> {service.location}</p>
+             </div>
            </div>
          ))}
        </div>

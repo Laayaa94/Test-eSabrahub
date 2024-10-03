@@ -8,17 +8,16 @@
 .services-list {
   width: 1400px;
   margin: 20px auto;
-  columns: 4; /* Number of columns in the list */
-  column-gap: 20px; /* Gap between columns */
+  columns: 4; 
+  column-gap: 20px; 
 }
 
 .service-list-gallery {
   width: 100%;
   margin-bottom: 40px;
-  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Larger shadow */
-  break-inside: avoid; /* Avoid breaking items inside the column */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); 
+  break-inside: avoid; 
 }
-
 .service-item {
   max-width: 100%; /* Ensure items do not exceed their container */
   border-radius: 15px; /* Rounded corners for items */
@@ -35,19 +34,23 @@
     color: #ffffffe4;
   }
 }
+.services-location-icon-for-all{
+  color: green;
+}
 
 /* Main photo styling */
 .service-main-photo {
   width: 100%; /* Full width of the item */
-  height: 200px; /* Fixed height for consistency */
+  height: auto; /* Fixed height for consistency */
   object-fit: cover; /* Ensures the image covers the area without distortion */
 }
 
 /* Text content styling */
 h2 {
-  font-size: 1.2em; /* Font size for headings */
+  font-size: 16px; /* Font size for headings */
   margin: 10px 0; /* Margin around headings */
   text-align: center;
+  color: #555;
 }
 
 p {
