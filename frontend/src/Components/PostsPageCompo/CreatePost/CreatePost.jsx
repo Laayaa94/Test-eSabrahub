@@ -4,6 +4,7 @@ import { faCamera, faVideo, faMapMarkerAlt } from '@fortawesome/free-solid-svg-i
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../../Context/AuthContext'; // Import the useAuth hook
 import axios from 'axios';
+import LocationInput from '../../Map/LocationInput'; // Import your LocationInput component
 import './CreatePost.css';
 
 const CreatePost = () => {
@@ -11,11 +12,12 @@ const CreatePost = () => {
   const [text, setText] = useState('');
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [location, setLocation] = useState('');
-  const [caption, setCaption] = useState(''); // Single caption for media posts
-  const [backgroundColor, setBackgroundColor] = useState('#ffffff'); // Default background color
+  const [location, setLocation] = useState(''); // To store selected location
+  const [caption, setCaption] = useState('');
+  const [backgroundColor, setBackgroundColor] = useState('#ffffff');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
-  const [postType, setPostType] = useState('text'); // 'text' or 'media'
+  const [postType, setPostType] = useState('text');
+  const [showLocationInput, setShowLocationInput] = useState(false); // State to control visibility of LocationInput
 
   const handleTextChange = (e) => {
     setText(e.target.value);
@@ -29,10 +31,6 @@ const CreatePost = () => {
   const handleVideoChange = (e) => {
     const files = Array.from(e.target.files);
     setVideos((prevVideos) => [...prevVideos, ...files]);
-  };
-
-  const handleLocationChange = (e) => {
-    setLocation(e.target.value);
   };
 
   const handleCaptionChange = (e) => {
@@ -54,22 +52,27 @@ const CreatePost = () => {
     setPhotos([]);
     setVideos([]);
     setLocation('');
-    setCaption(''); // Reset caption
+    setCaption('');
+  };
+
+  const handleLocationSelect = (address, coordinates) => {
+    setLocation(address); // Set the selected address
+    setShowLocationInput(false); // Hide the location input map after selection
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const formData = new FormData();
     formData.append('text', text);
     formData.append('location', location);
     formData.append('caption', caption);
     formData.append('backgroundColor', backgroundColor);
     formData.append('postType', postType);
-  
+
     photos.forEach(photo => formData.append('photos', photo));
     videos.forEach(video => formData.append('videos', video));
-  
+
     try {
       const response = await axios.post('http://localhost:5000/api/posts', formData, {
         headers: {
@@ -77,7 +80,7 @@ const CreatePost = () => {
           Authorization: `Bearer ${authState.token}`
         }
       });
-  
+
       console.log('Post created successfully:', response.data);
       alert('Post created successfully!');
       // Reset state after successful post creation
@@ -93,7 +96,6 @@ const CreatePost = () => {
       alert('Error creating post. Please try again.');
     }
   };
-  
 
   return (
     <div className="create-post">
@@ -101,14 +103,14 @@ const CreatePost = () => {
         <button
           className={`post-type-button ${postType === 'text' ? 'active' : ''}`}
           onClick={() => handlePostTypeChange('text')}
-          style={{ backgroundColor: postType === 'text' ? '#dd7413' : '' }} 
+          style={{ backgroundColor: postType === 'text' ? '#dd7413' : '' }}
         >
           Text Post
         </button>
         <button
           className={`post-type-button ${postType === 'media' ? 'active' : ''}`}
           onClick={() => handlePostTypeChange('media')}
-          style={{ backgroundColor: postType === 'media' ? '#dd7413' : '' }} 
+          style={{ backgroundColor: postType === 'media' ? '#dd7413' : '' }}
         >
           Media Post
         </button>
@@ -165,13 +167,7 @@ const CreatePost = () => {
                 <input type="file" multiple accept="video/*" onChange={handleVideoChange} />
               </label>
               <label className="media-button">
-                <FontAwesomeIcon icon={faMapMarkerAlt} className='famapmarkeralt'/>
-                <input
-                  type="text"
-                  placeholder="Location"
-                  value={location}
-                  onChange={handleLocationChange}
-                />
+                <FontAwesomeIcon icon={faMapMarkerAlt} className='famapmarkeralt' onClick={() => setShowLocationInput(!showLocationInput)} />
               </label>
             </div>
 
@@ -189,7 +185,18 @@ const CreatePost = () => {
                 </video>
               </div>
             ))}
+
+            {/* Display the selected location below the icons */}
+            {location && (
+              <div className="selected-location">
+                <p><FontAwesomeIcon icon={faMapMarkerAlt} ></FontAwesomeIcon> {location}</p>
+              </div>
+            )}
           </>
+        )}
+
+        {showLocationInput && (
+          <LocationInput onLocationSelect={handleLocationSelect} /> 
         )}
 
         <button type="submit" className='createpost-btn'>Post</button>

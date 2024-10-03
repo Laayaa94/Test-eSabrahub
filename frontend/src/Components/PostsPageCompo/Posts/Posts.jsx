@@ -13,7 +13,7 @@ const Posts = () => {
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
   const [userData, setUserData] = useState({
-    profileImage:'/uploads/profiles/profile.jpg', // Set default image initially
+    profileImage: '/uploads/profiles/profile.jpg', // Set default image initially
     username: '',
     description: '',
     email: '',
@@ -136,6 +136,15 @@ const Posts = () => {
     }
   };
 
+  const handleLocationClick = (location) => {
+    if (location) {
+      const encodedLocation = encodeURIComponent(location);
+      window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
+    } else {
+      console.error('Location is not available');
+    }
+  };
+
   const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes, caption }) => {
     const userName = user?.username || 'Unknown User';
     const userProfile = user?.profileImage || 'https://via.placeholder.com/50';
@@ -166,16 +175,16 @@ const Posts = () => {
     return (
       <div className="post">
         <div className="post-header">
-        <img
-          src={ getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
-          alt="Profile"
-          className="user-profile"
-        />          
-        <div className="user-info">
+          <img
+            src={getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
+            alt="Profile"
+            className="user-profile"
+          />
+          <div className="user-info">
             <span className="user-name">{userName}</span>
           </div>
           {location && (
-            <div className="post-location">
+            <div className="post-location" onClick={() => handleLocationClick(location)}>
               <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
               <span className="location-name">{location}</span>
               <FontAwesomeIcon icon={faUserPlus} className="follow-icon" />

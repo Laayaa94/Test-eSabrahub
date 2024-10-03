@@ -5,6 +5,8 @@ import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../../Context/AuthContext';
 import axios from 'axios';
 import './UpdatePost.css';
+import LocationInput from '../../Map/LocationInput';
+
 
 const UpdatePost = ({ post, onClose, onSave = () => {} }) => {
   const { authState } = useAuth();
@@ -125,6 +127,11 @@ const UpdatePost = ({ post, onClose, onSave = () => {} }) => {
       alert(`Error updating post: ${error.response?.data?.message || error.message || 'Please try again.'}`);
     }
   };
+  const handleLocationSelect = (location) => {
+    setLocation(location); 
+  };
+  
+  
 
   return (
     <div className="update-post">
@@ -185,7 +192,7 @@ const UpdatePost = ({ post, onClose, onSave = () => {} }) => {
                 onChange={handleCaptionChange}
               />
             </div>
-            <div className="media-buttons">
+              <div className="media-buttons">
               <label className="media-button">
                 <FontAwesomeIcon icon={faCamera} />
                 <input type="file" multiple accept="image/*" onChange={handlePhotoChange} />
@@ -196,14 +203,17 @@ const UpdatePost = ({ post, onClose, onSave = () => {} }) => {
               </label>
               <label className="media-button">
                 <FontAwesomeIcon icon={faMapMarkerAlt} />
-                <input
-                  type="text"
-                  placeholder="Location"
-                  value={location}
-                  onChange={handleLocationChange}
-                />
               </label>
-            </div>
+        </div>
+
+{/* Display the LocationInput map below the media buttons */}
+          <div className="location-map-container">
+            <LocationInput 
+              onLocationSelect={handleLocationSelect} 
+              currentLocation={location} // Pass current location to the component
+            />
+          </div>
+
             {photoPreviews.map((url, index) => (
               <div key={index} className="photo-preview">
                 <img src={url} alt="Preview" />

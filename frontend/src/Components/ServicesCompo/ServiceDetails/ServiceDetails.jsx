@@ -80,7 +80,7 @@ const ServiceDetails = () => {
                   }}
                 />
               </div>
-              <p> {service.description}</p>
+              <p className='service-details-description-frontend'> {service.description}</p>
             </div>
           </div>
           <h2 className='service-details-heading'>See more...</h2>

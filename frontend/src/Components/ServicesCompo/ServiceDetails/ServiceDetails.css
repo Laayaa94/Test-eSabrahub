@@ -21,7 +21,7 @@
   }
   .service-details-left-side h1{
     text-align: left;
-    font-size: 22px;
+    font-size: 20px;
     color: #dd7413;
     font-weight: 700;
     margin-bottom: 20px;
@@ -46,7 +46,7 @@
   .service-details-right-side .location-service{
     color: green;
     font-weight: 700;
-    font-size: 18px;
+    font-size: 16px;
     text-align: left;
     font-style: italic;
     padding-left: 30px;
@@ -84,3 +84,33 @@
     margin-right: 20px;
 
   }
+  .service-details-description-frontend{
+    text-align: left;
+    padding-left: 30px;
+    padding-right: 30px;
+  }
+
+  @media(max-width:800px){
+    .service-list-top{
+      flex-direction: column;
+    }
+  }
+
+  @media(max-width:700px){
+    .service-list-top{
+      flex-direction: column;
+    }
+    .extra-photos-bottom-part-service-details{
+      columns: 2; 
+    
+    }
+  }
+
+  @media(max-width:500px){
+   
+    .extra-photos-bottom-part-service-details{
+      columns: 1; 
+    
+    }
+  }
+
