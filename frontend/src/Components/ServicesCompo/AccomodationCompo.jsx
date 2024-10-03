@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHome, faUser, faPen, faMessage } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { fetchServicesByType } from './Api';
 
@@ -30,6 +32,7 @@ const AccommodationCompo = () => {
 
   const handleServiceClick = (id) => {
     navigate(`/details/${id}`);
+    
   };
 
   if (loading) return <p>Loading...</p>;
