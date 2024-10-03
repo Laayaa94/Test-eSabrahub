@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import './ServicesAdmin.css'; // Import CSS file
+import axios from 'axios';
 
 function Foods() {
     const [services, setServices] = useState([]);
@@ -77,7 +78,6 @@ function Foods() {
                                                     src={`http://localhost:5000/uploads/extrapics/${photo}`}
                                                     alt={`Extra ${index}`}
                                                     className="extraPhotoImage"
-                                                    style={{ width: '100px', height: 'auto', margin: '5px' }}
                                                 />
                                             ))}
                                         </div>
@@ -85,8 +85,8 @@ function Foods() {
                                         <p>No extra photos</p>
                                     )}
                                 </td>
-                                <td>{service.name}</td>
-                                <td>{service.location}</td>
+                                <td className='location-admin'>{service.name}</td>
+                                <td className='location-admin'>{service.location}</td>
                                 <td className='description'>{service.description}</td>
                                 <td>
                                     <FontAwesomeIcon

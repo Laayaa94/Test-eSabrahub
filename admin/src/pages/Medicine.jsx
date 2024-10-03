@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { fetchServicesByType, deleteService } from '../ServicesAPI/Api';
+import { fetchServicesByType, deleteService } from '../../../admin/src/ServicesAPI/Api';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
@@ -45,17 +45,17 @@ function Accommodation() {
 
     return (
         <div className='table'>
-            <h1>Accommodation Services</h1>
+            <h1 >Medicale Centers</h1>
             {services.length > 0 ? (
                 <table className="servicesTable">
                     <thead>
                         <tr>
-                            <th>Main Image</th>
-                            <th>Extra Images</th>
-                            <th>Name</th>
-                            <th>Location</th>
-                            <th>Description</th>
-                            <th>Actions</th>
+                            <th style={{ width: '10%' }}>Main Image</th>
+                            <th style={{ width: '10%' }}>Extra Images</th>
+                            <th style={{ width: '10%' }}>Name</th>
+                            <th style={{ width: '12%' }}>Location</th>
+                            <th style={{ width: '28%' }}>Description</th>
+                            <th style={{ width: '5%' }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -70,14 +70,14 @@ function Accommodation() {
                                 </td>
                                 <td>
                                     {service.extraPhotos && service.extraPhotos.length > 0 ? (
-                                        <div className='extraPhotosContainer' style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                        <div className='extraPhotosContainer' style={{ display: 'flex', flexDirection: 'column', maxHeight: '450px', overflowY: 'auto' }}>
                                             {service.extraPhotos.map((photo, index) => (
                                                 <img
                                                     key={index}
                                                     src={`http://localhost:5000/uploads/extrapics/${photo}`}
                                                     alt={`Extra ${index}`}
                                                     className="extraPhotoImage"
-                                                    style={{ width: '100px', height: 'auto', margin: '5px' }}
+                                                  
                                                 />
                                             ))}
                                         </div>
@@ -85,9 +85,9 @@ function Accommodation() {
                                         <p>No extra photos</p>
                                     )}
                                 </td>
-                                <td>{service.name}</td>
-                                <td>{service.location}</td>
-                                <td className='description'>{service.description}</td>
+                                <td className='location-admin'>{service.name}</td>
+                                <td className='location-admin'>{service.location}</td>
+                                <td className="description">{service.description}</td>
                                 <td>
                                     <FontAwesomeIcon
                                         icon={faTrash}
@@ -96,7 +96,7 @@ function Accommodation() {
                                     />
                                     <FontAwesomeIcon
                                         icon={faEdit}
-                                        style={{ color: 'black', cursor: 'pointer', marginLeft: '10px' }}
+                                        style={{ color: 'Black', cursor: 'pointer', marginLeft: '10px' }}
                                         onClick={() => handleEdit(service._id)}
                                     />
                                 </td>

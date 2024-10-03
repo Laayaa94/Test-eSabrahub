@@ -133,4 +133,117 @@
     display: flex;
     flex-wrap: wrap;
   }
-  
+  /* Mobile Devices (max-width: 600px) */
+@media (max-width: 600px) {
+    .edit-service-container {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+
+    .edit-service-container h2 {
+        font-size: 20px; /* Smaller font size for headings */
+    }
+
+    .form-group {
+        font-size: 16px; /* Smaller font size for form labels */
+    }
+
+    .edit-service-input,
+    .edit-service-select,
+    .edit-service-textarea,
+    .edit-service-button {
+        font-size: 12px; /* Adjust input and button font size */
+    }
+
+    .edit-service-button {
+        padding: 8px 12px; /* Reduce button padding */
+    }
+
+    .edit-service-textarea {
+        height: 80px; /* Reduce height for the textarea */
+    }
+
+    .extra-photos-preview {
+        flex-direction: column; /* Stack extra photo previews vertically */
+        align-items: center; /* Center align the items */
+    }
+
+    .image-preview {
+        max-width: 80px; /* Smaller preview images */
+        margin: 5px; /* Reduce margin between previews */
+    }
+}
+
+
+  /* Mobile Devices (max-width: 600px) */
+@media (max-width: 600px) {
+    .edit-service-container {
+        padding: 10px; /* Reduce padding on smaller screens */
+    }
+
+    .edit-service-container h2 {
+        font-size: 20px; /* Smaller font size for headings */
+    }
+
+    .form-group {
+        font-size: 16px; /* Smaller font size for form labels */
+    }
+
+    .edit-service-input,
+    .edit-service-select,
+    .edit-service-textarea,
+    .edit-service-button {
+        font-size: 12px; /* Adjust input and button font size */
+    }
+
+    .edit-service-button {
+        padding: 8px 12px; /* Reduce button padding */
+    }
+
+    .edit-service-textarea {
+        height: 80px; /* Reduce height for the textarea */
+    }
+
+    .extra-photos-preview {
+        flex-direction: column; /* Stack extra photo previews vertically */
+        align-items: center; /* Center align the items */
+    }
+
+    .image-preview {
+        max-width: 80px; /* Smaller preview images */
+        margin: 5px; /* Reduce margin between previews */
+    }
+}
+
+/* Tablets (max-width: 900px) */
+@media (max-width: 900px) {
+    .edit-service-container {
+        padding: 15px; /* Slightly less padding */
+    }
+
+    .edit-service-container h2 {
+        font-size: 22px; /* Slightly smaller font size for headings */
+    }
+
+    .form-group {
+        font-size: 17px; /* Keep form labels at the same size */
+    }
+
+    .edit-service-input,
+    .edit-service-select,
+    .edit-service-textarea {
+        font-size: 13px; /* Adjust input and select font size */
+    }
+
+    .edit-service-button {
+        padding: 9px 14px; /* Adjust button padding */
+    }
+
+    .edit-service-textarea {
+        height: 90px; /* Adjust height for textarea */
+    }
+
+    .extra-photos-preview {
+        flex-direction: row; /* Align extra photo previews in a row */
+        justify-content: center; /* Center align the items */
+    }
+}

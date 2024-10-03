@@ -77,7 +77,6 @@ function Transport() {
                                                     src={`http://localhost:5000/uploads/extrapics/${photo}`}
                                                     alt={`Extra ${index}`}
                                                     className="extraPhotoImage"
-                                                    style={{ width: '100px', height: 'auto', margin: '5px' }}
                                                 />
                                             ))}
                                         </div>
@@ -85,8 +84,8 @@ function Transport() {
                                         <p>No extra photos</p>
                                     )}
                                 </td>
-                                <td>{service.name}</td>
-                                <td>{service.location}</td>
+                                <td className='location-admin'>{service.name}</td>
+                                <td className='location-admin'>{service.location}</td>
                                 <td className='description'>{service.description}</td>
                                 <td>
                                     <FontAwesomeIcon

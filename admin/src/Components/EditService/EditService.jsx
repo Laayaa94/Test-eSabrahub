@@ -50,7 +50,6 @@ const EditService = () => {
   const handleLocationSelect = (location) => {
     setService((prevService) => ({ ...prevService, location }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -74,6 +73,8 @@ const EditService = () => {
         extraFiles.forEach((file) => {
           extraPhotosData.append('extraPhotos', file);
         });
+
+        console.log('Extra Photos Data:', extraPhotosData); // Log the FormData content
 
         await axios.put(`http://localhost:5000/api/extraphotos/${id}`, extraPhotosData, {
           headers: { 'Content-Type': 'multipart/form-data' }
@@ -102,10 +103,11 @@ const EditService = () => {
           break;
       }
     } catch (error) {
-      console.error('Error updating service:', error);
+      console.error('Error updating service:', error.response ? error.response.data : error);
       alert('Error updating service');
     }
-  };
+};
+
 
   if (loading) return <p>Loading...</p>;
   return (

@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import './ServicesAdmin.css'; // Import CSS file
+import axios from 'axios';
 
 function Accommodation() {
     const [services, setServices] = useState([]);
@@ -50,12 +51,12 @@ function Accommodation() {
                 <table className="servicesTable">
                     <thead>
                         <tr>
-                            <th style={{ width: '15%' }}>Main Image</th>
-                            <th style={{ width: '25%' }}>Extra Images</th>
-                            <th style={{ width: '15%' }}>Name</th>
-                            <th style={{ width: '15%' }}>Location</th>
-                            <th style={{ width: '25%' }}>Description</th>
-                            <th style={{ width: '10%' }}>Actions</th>
+                            <th style={{ width: '10%' }}>Main Image</th>
+                            <th style={{ width: '10%' }}>Extra Images</th>
+                            <th style={{ width: '10%' }}>Name</th>
+                            <th style={{ width: '12%' }}>Location</th>
+                            <th style={{ width: '28%' }}>Description</th>
+                            <th style={{ width: '5%' }}>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -77,7 +78,7 @@ function Accommodation() {
                                                     src={`http://localhost:5000/uploads/extrapics/${photo}`}
                                                     alt={`Extra ${index}`}
                                                     className="extraPhotoImage"
-                                                    style={{ width: '100px', height: 'auto', margin: '5px 0' }}
+                                                  
                                                 />
                                             ))}
                                         </div>
@@ -85,8 +86,8 @@ function Accommodation() {
                                         <p>No extra photos</p>
                                     )}
                                 </td>
-                                <td>{service.name}</td>
-                                <td>{service.location}</td>
+                                <td className='location-admin'>{service.name}</td>
+                                <td className='location-admin'>{service.location}</td>
                                 <td className="description">{service.description}</td>
                                 <td>
                                     <FontAwesomeIcon

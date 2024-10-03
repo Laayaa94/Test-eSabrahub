@@ -59,7 +59,7 @@
     width: 250px; /* Adjust width as needed */
   }
   
-  @media(max-width:1000px){
+  @media(max-width:1200px){
     .open-btn{
       display: block;
     }
@@ -73,5 +73,24 @@
       width: 250px;
     }
     
+  }
+  @media(max-width:700px){
+    .open-btn{
+      font-size: 16px;
+    }
+    .sidenav .close-btn {
+      font-size: 26px;
+     }
+     .sidenav a{
+      font-size: 16px;
+     }
+  }
+  @media(max-width:400px){
+    .open-btn{
+      font-size: 14px;
+    }
+    .sidenav a{
+      font-size: 14px;
+    }
   }
   
