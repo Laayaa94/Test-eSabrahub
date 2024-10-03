@@ -1,6 +1,7 @@
 /* ChatPage.css */
 .chat-page-container {
     display: flex;
+   width: 100%;
     height: 95vh; /* Adjust if needed */
   }
   
@@ -16,4 +17,14 @@
     display: flex;
     flex-direction: column;
   }
-  
+  @media(max-width:500px){
+    .chatlist-container{
+     width: 15%;    
+    border: none;
+    }
+    .chat-display-container{
+      width: 85%;
+
+    }
+   
+  }

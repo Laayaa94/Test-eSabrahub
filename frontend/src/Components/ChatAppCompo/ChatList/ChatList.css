@@ -2,6 +2,7 @@
     display: flex;
     flex-direction: column;
 
+
 }
   
   .chatlist-top {
@@ -61,3 +62,21 @@
   color: #ffffff68;
   font-size: 14px;
   }
+
+  @media(max-width:700px){
+    .chat-user-auth-name{
+      display: none;
+    }
+    .chatlist-participant .chatlist-user-content{
+      display: none;
+    }
+    .chatlist-top .chatlist-user-img img{
+      display: none;
+    }
+  }
+@media(max-width:500px){
+  .chatlist-participant .chatlist-user-img img{
+    width: 40px;
+    height: 40px;
+  }
+}

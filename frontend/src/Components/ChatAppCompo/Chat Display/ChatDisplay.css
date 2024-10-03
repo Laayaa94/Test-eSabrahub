@@ -6,6 +6,7 @@
     padding: 10px;
     background: linear-gradient(to right, #151414 , #dd75138b), url('../../../Assets/chat.jpg');
     background-size: cover;
+
   }
   
   .chat-messages {
@@ -96,4 +97,13 @@
   .chat-form button{
     width: 10%;
     height: 40px;
+  }
+
+  @media(max-width:500px){
+    .chat-form input{
+      width: 80%;
+    }
+    .chat-form button{
+      width: 20%;
+    }
   }
