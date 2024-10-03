@@ -63,17 +63,19 @@ const ChatDisplay = ({ conversation, onSendMessage }) => {
   }
 
   return (
-    <div className="chat-display-container">
-      <div className="chat-messages">
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`chat-message ${msg.sender === authState.user._id ? 'sent' : 'received'}`}
-          >
-            <p>{msg.message}</p>
-          </div>
-        ))}
-      </div>
+    <div className="chat-display-container-chat">
+    <div className="chat-messages">
+  {messages.map((msg, index) => (
+    <div
+      key={index}
+      className={`chat-message ${msg.sender === authState.user._id ? 'sent' : 'received'}`}
+    >
+      <p>{msg.message}</p>
+      <span className="time-stamp">{/* Add timestamp here */}</span>
+    </div>
+  ))}
+</div>
+
       <form className="chat-form" onSubmit={handleSendMessage}>
         <input
           type="text"

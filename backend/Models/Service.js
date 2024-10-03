@@ -9,6 +9,16 @@ const serviceSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    coordinates: {
+        lat: {
+            type: Number, 
+            required: true, 
+        },
+        lng: {
+            type: Number, 
+            required: true, 
+        },
+    },
     description: {
         type: String,
         required: true,

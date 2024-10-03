@@ -64,7 +64,7 @@ const ChatList = ({ onSelectConversation, newMessage }) => {
       />
     </div>
     <div className="chatlist-user-content">
-      <p>{authState.user.username}</p>
+      <p className='chat-user-auth-name'>{authState.user.username}</p>
     </div>
   </div>
   {conversations.map(conversation => (
@@ -91,7 +91,7 @@ const ChatList = ({ onSelectConversation, newMessage }) => {
               </div>
               <div className="chatlist-user-content">
                 <p>{participant.username}</p>
-                <p>{conversation.lastMessage?.message || 'No messages yet'}</p>
+                <p className='text-msg'>{conversation.lastMessage?.message || 'No messages yet'}</p>
               </div>
             </div>
           ))}

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EditService.css';
+import LocationInput from '../Map/LocationInput';
 
 const EditService = () => {
   const { id } = useParams(); 
@@ -43,6 +44,11 @@ const EditService = () => {
 
   const handleExtraFileChange = (e) => {
     setExtraFiles([...e.target.files]);
+  };
+
+  // Function to handle location selection
+  const handleLocationSelect = (location) => {
+    setService((prevService) => ({ ...prevService, location }));
   };
 
   const handleSubmit = async (e) => {
@@ -118,12 +124,9 @@ const EditService = () => {
         </div>
         <div className="form-group">
           <label className="edit-service-label">Location:</label>
-          <input
-            className="edit-service-input" 
-            type="text"
-            name="location"
-            value={service.location}
-            onChange={handleChange}
+          <LocationInput 
+            onLocationSelect={handleLocationSelect} 
+            currentLocation={service.location} // Pass current location to the component
           />
         </div>
         <div className="form-group">
@@ -164,11 +167,10 @@ const EditService = () => {
             onChange={handleExtraFileChange}
           />
         </div>
-        <button className="edit-service-button" type="submit">Update Service</button> {/* Updated button class */}
+        <button className="edit-service-button" type="submit">Update Service</button> 
       </form>
     </div>
   );
-  
 };
 
 export default EditService;
