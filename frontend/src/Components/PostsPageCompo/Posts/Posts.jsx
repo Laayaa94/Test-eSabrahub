@@ -21,7 +21,7 @@ const Posts = () => {
     contactNumber: '',
   });
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate(); 
 
   // Fetch and sort posts by creation time
   const fetchPosts = useCallback(async () => {

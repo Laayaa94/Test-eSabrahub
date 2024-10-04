@@ -13,6 +13,7 @@ const Login = () => {
     password: '',
     confirmPassword: '',
   });
+  const [loading, setLoading] = useState(false); // Added loading state
   const { authState, login, signup } = useAuth();
   const navigate = useNavigate();
 
@@ -21,53 +22,80 @@ const Login = () => {
     setFormData({ ...formData, [name]: value });
   };
 
+  const validateEmail = (email) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Basic email validation regex
+    return emailRegex.test(email);
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true); // Start loading
+
     try {
       if (isSignup) {
         if (formData.password !== formData.confirmPassword) {
-          toast.error("Password doesn't match")
+          toast.error("Passwords don't match");
+          setLoading(false); // Stop loading
           return;
         }
-        await signup(formData.username, formData.email, formData.password, formData.confirmPassword);
-        toast.success("Signup Successfull")
+        if (!validateEmail(formData.email)) {
+          toast.error("Invalid email format");
+          setLoading(false); // Stop loading
+          return;
+        }
+        await signup(formData.username, formData.email, formData.password);
+        toast.success("Signup successful");
       } else {
+        if (!validateEmail(formData.email)) {
+          toast.error("Invalid email format");
+          setLoading(false); // Stop loading
+          return;
+        }
         await login(formData.email, formData.password);
-        toast.success("Login Successfull")
+        toast.success("Login successful");
       }
-  
-      
+
       // Log user details
       console.log('User:', authState.user);
       console.log('User Email:', authState.user?.email); // Optional chaining
       console.log('User ID:', authState.user?.id);
       console.log('Token:', authState.token);
-  
-      navigate('/posts'); // Redirect to the /posts page after successful login or signup
+
+      // Reset form data after successful login or signup
+      setFormData({
+        username: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      });
       
+      navigate('/posts'); // Redirect to the /posts page after successful login or signup
+
     } catch (error) {
-    
-      toast.error("Invalid Credential")
+      toast.error(error.message || "Invalid Credentials"); // Display specific error message
+    } finally {
+      setLoading(false); // Stop loading regardless of success or failure
     }
   };
-  
-  const setIsSignupFun=()=>{
+
+  const setIsSignupFun = () => {
     setIsSignup(true);
     setFormData({
-    username: '',
-    email: '',
-    password: '',
-    confirmPassword: '',
-    })
+      username: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
+    });
+  };
 
-  }
-const setLogin=()=>{
-  setIsSignup(false);
-  setFormData({
-  email: '',
-  password: '',
-  })
-}
+  const setLogin = () => {
+    setIsSignup(false);
+    setFormData({
+      email: '',
+      password: '',
+    });
+  };
+
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
@@ -108,7 +136,9 @@ const setLogin=()=>{
             required
           />
         )}
-        <button type="submit">{isSignup ? 'Sign Up' : 'Login'}</button>
+        <button type="submit" disabled={loading}>
+          {loading ? 'Loading...' : isSignup ? 'Sign Up' : 'Login'}
+        </button>
         <div className="login-bottom-part">
           {isSignup ? (
             <p>

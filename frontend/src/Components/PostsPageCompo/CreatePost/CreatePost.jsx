@@ -5,7 +5,7 @@ import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../../Context/AuthContext'; // Import the useAuth hook
 import axios from 'axios';
 import {toast} from 'react-toastify'
-import LocationInput from '../../Map/LocationInput'; 
+import LocationInput from '../../Map/LocationInput'; // Import your LocationInput component
 import './CreatePost.css';
 
 const CreatePost = () => {
@@ -20,7 +20,6 @@ const CreatePost = () => {
   const [postType, setPostType] = useState('text');
   const [showLocationInput, setShowLocationInput] = useState(false); // State to control visibility of LocationInput
 
-  
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
@@ -85,7 +84,6 @@ const CreatePost = () => {
 
       console.log('Post created successfully:', response.data);
       toast.success("Post created successfully")
-
       setText('');
       setPhotos([]);
       setVideos([]);

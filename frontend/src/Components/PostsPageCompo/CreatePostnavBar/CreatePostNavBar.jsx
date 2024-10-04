@@ -14,7 +14,7 @@ const CreatePostNavBar = () => {
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { authState } = useAuth(); // Access the authenticated user's state
+  const { authState } = useAuth(); 
 
   const openModal = () => {
     setModalIsOpen(true);
@@ -29,7 +29,7 @@ const CreatePostNavBar = () => {
   };
 
   const goToProfile = () => {
-    navigate('/profile'); // Adjust the path as needed
+    navigate('/profile'); 
   };
 
   const scrollToTopOrNavigate = () => {
