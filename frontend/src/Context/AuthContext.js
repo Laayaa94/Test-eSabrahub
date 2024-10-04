@@ -28,7 +28,6 @@ export const AuthProvider = ({ children }) => {
           console.error('Token validation failed:', error.response?.data || error.message);
           localStorage.removeItem('token');
           setAuthState({ user: null, token: null });
-          toast.error('Session expired. Please log in again.'); // Notify user about session expiration
         }
       }
     };
