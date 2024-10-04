@@ -12,4 +12,3 @@ const serviceExtraPhotosSchema = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('ServiceExtraPhotos', serviceExtraPhotosSchema);
-s

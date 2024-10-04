@@ -41,6 +41,11 @@
     display: flex;
     align-items: center;
     padding: 10px;
+    width: 100%;
+    cursor: pointer;
+  }
+  .chatlist-participant:hover{
+   background-color: #cccccc3a;
   }
   
   .chatlist-participant .chatlist-user-img img {

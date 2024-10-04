@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import {toast} from 'react-toastify'
 import './ContactUs.css';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -28,7 +29,7 @@ const ContactUs = () => {
         setFullName('');
         setEmail('');
         setMessage('');
-        alert('Message sent successfully!')
+        toast.success("Message sent successfully")
       }
     } catch (error) {
       setError('Failed to send message. Please try again later.');

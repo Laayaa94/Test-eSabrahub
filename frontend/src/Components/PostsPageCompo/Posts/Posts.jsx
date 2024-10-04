@@ -21,7 +21,7 @@ const Posts = () => {
     contactNumber: '',
   });
 
-  const navigate = useNavigate(); 
+  const navigate = useNavigate(); // Initialize useNavigate
 
   // Fetch and sort posts by creation time
   const fetchPosts = useCallback(async () => {
@@ -136,13 +136,6 @@ const Posts = () => {
     }
   };
 
-  // New function to handle location click
-  const handleLocationClick = (location) => {
-    const query = encodeURIComponent(location); // Encode the location string
-    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
-    window.open(googleMapsUrl, '_blank'); // Open in a new tab
-  };
-
   const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes, caption }) => {
     const userName = user?.username || 'Unknown User';
     const userProfile = user?.profileImage || 'https://via.placeholder.com/50';
@@ -159,7 +152,6 @@ const Posts = () => {
             {photos.map((item, index) => (
               <img key={index} src={`http://localhost:5000/${item}`} alt={`Post Media ${index}`} className="media-image" />
             ))}
-
           </div>
         )}
         {videos.map((video, index) => (
@@ -183,7 +175,7 @@ const Posts = () => {
             <span className="user-name">{userName}</span>
           </div>
           {location && (
-            <div className="post-location" onClick={() => handleLocationClick(location)}> {/* Add onClick handler */}
+            <div className="post-location">
               <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
               <span className="location-name">{location}</span>
               <FontAwesomeIcon icon={faUserPlus} className="follow-icon" />
@@ -232,12 +224,12 @@ const Posts = () => {
           postType={post.postType}
           user={post.user}
           text={post.text}
-          photos={post.photos || []}
-          videos={post.videos || []}
+          photos={post.photos}
+          videos={post.videos}
           location={post.location}
           backgroundColor={post.backgroundColor}
+          caption={post.caption}
           likes={post.likes}
-          caption={post.caption} 
         />
       ))}
     </div>
