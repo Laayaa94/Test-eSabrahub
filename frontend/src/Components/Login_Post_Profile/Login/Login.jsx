@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { useAuth } from '../../../Context/AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+
 import './Login.css';
 
 const Login = () => {
@@ -24,16 +26,17 @@ const Login = () => {
     try {
       if (isSignup) {
         if (formData.password !== formData.confirmPassword) {
-          alert("Passwords don't match");
+          toast.error("Password doesn't match")
           return;
         }
         await signup(formData.username, formData.email, formData.password, formData.confirmPassword);
-        alert('Signup successful');
+        toast.success("Signup Successfull")
       } else {
         await login(formData.email, formData.password);
-        alert('Login successful');
+        toast.success("Login Successfull")
       }
   
+      
       // Log user details
       console.log('User:', authState.user);
       console.log('User Email:', authState.user?.email); // Optional chaining
@@ -43,11 +46,28 @@ const Login = () => {
       navigate('/posts'); // Redirect to the /posts page after successful login or signup
       
     } catch (error) {
-      alert(`Error: ${error.message}`);
+    
+      toast.error("Invalid Credential")
     }
   };
   
+  const setIsSignupFun=()=>{
+    setIsSignup(true);
+    setFormData({
+    username: '',
+    email: '',
+    password: '',
+    confirmPassword: '',
+    })
 
+  }
+const setLogin=()=>{
+  setIsSignup(false);
+  setFormData({
+  email: '',
+  password: '',
+  })
+}
   return (
     <div className="auth-container">
       <form className="auth-form" onSubmit={handleSubmit}>
@@ -93,12 +113,12 @@ const Login = () => {
           {isSignup ? (
             <p>
               Already have an account? 
-              <span onClick={() => setIsSignup(false)}> Login here</span>
+              <span onClick={setLogin}> Login here</span>
             </p>
           ) : (
             <p>
               Create an account? 
-              <span onClick={() => setIsSignup(true)}> Click here</span>
+              <span onClick={setIsSignupFun}> Click here</span>
             </p>
           )}
         </div>

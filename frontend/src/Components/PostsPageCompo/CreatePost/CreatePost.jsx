@@ -4,21 +4,23 @@ import { faCamera, faVideo, faMapMarkerAlt } from '@fortawesome/free-solid-svg-i
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../../Context/AuthContext'; // Import the useAuth hook
 import axios from 'axios';
-import LocationInput from '../../Map/LocationInput'; // Import your LocationInput component
+import {toast} from 'react-toastify'
+import LocationInput from '../../Map/LocationInput'; 
 import './CreatePost.css';
 
 const CreatePost = () => {
-  const { authState } = useAuth(); // Get authState from AuthContext
+  const { authState } = useAuth(); 
   const [text, setText] = useState('');
   const [photos, setPhotos] = useState([]);
   const [videos, setVideos] = useState([]);
-  const [location, setLocation] = useState(''); // To store selected location
+  const [location, setLocation] = useState(''); 
   const [caption, setCaption] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('#ffffff');
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const [postType, setPostType] = useState('text');
   const [showLocationInput, setShowLocationInput] = useState(false); // State to control visibility of LocationInput
 
+  
   const handleTextChange = (e) => {
     setText(e.target.value);
   };
@@ -82,8 +84,8 @@ const CreatePost = () => {
       });
 
       console.log('Post created successfully:', response.data);
-      alert('Post created successfully!');
-      // Reset state after successful post creation
+      toast.success("Post created successfully")
+
       setText('');
       setPhotos([]);
       setVideos([]);
@@ -93,7 +95,7 @@ const CreatePost = () => {
       setPostType('text');
     } catch (error) {
       console.error('Error creating post:', error);
-      alert('Error creating post. Please try again.');
+      toast.error("Error creating post. Please try again")
     }
   };
 

@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import Modal from 'react-modal';
 import axios from 'axios';
+import {toast} from 'react-toastify'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faEnvelope, faPhone, faEdit } from '@fortawesome/free-solid-svg-icons';
 
@@ -92,8 +93,8 @@ const Profile = () => {
         },
       });
 
-      console.log('Profile update response:', response.data); // Log response data
-
+      console.log('Profile update response:', response.data);
+      toast.success("Profile Updated")
       // Clear file input after submission
       if (fileInputRef.current) {
         fileInputRef.current.value = null;
@@ -180,7 +181,7 @@ const Profile = () => {
         overlayClassName="modal-overlay"
       >
         <button onClick={closeModal} className="close-modal-button">X</button>
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} >
           <div
             className="profile-image-container"
             onClick={() => fileInputRef.current.click()}

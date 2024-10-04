@@ -1,5 +1,8 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { ToastContainer,toast } from 'react-toastify'; // Import ToastContainer
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
+
 import NavBar from './Components/HomePageCompo/NavBar/NavBar';
 import HomePage from './Pages/HomePage';
 import LoginSignupPage from './Pages/LoginSignupPage';
@@ -16,7 +19,6 @@ import AboutUs from './Components/HomePageCompo/AboutUs/AboutUs';
 import Footer from './Components/HomePageCompo/Footer/Footer';
 import ProtectedRoute from './Components/ProtectedRoute/ProtectedRoute'; 
 import { AuthProvider } from './Context/AuthContext'; 
-import Profile from './Components/Login_Post_Profile/Profile/Profile';
 import ProfilePage from './Pages/ProfilePage';
 import ServiceDetails from './Components/ServicesCompo/ServiceDetails/ServiceDetails';
 import ChatDisplay from './Components/ChatAppCompo/Chat Display/ChatDisplay';
@@ -47,10 +49,20 @@ function App() {
               <Route path="/about" element={<AboutUs />} />
               <Route path="/profile" element={<ProfilePage />} />
               <Route path="/details/:id" element={<ServiceDetails />} />
-
             </Routes>
             <Footer />
           </div>
+          <ToastContainer 
+           className="toast-container" // Set your custom class name
+           position="top-right" // Set the position to top right
+           autoClose={5000} // Auto close after 5 seconds
+           hideProgressBar={false} // Show the progress bar
+           closeOnClick
+           pauseOnHover
+           draggable
+           pauseOnFocusLoss
+          
+          /> {/* Add ToastContainer here */}
         </div>
       </Router>
     </AuthProvider>

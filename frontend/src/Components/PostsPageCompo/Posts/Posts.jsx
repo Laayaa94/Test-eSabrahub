@@ -13,7 +13,7 @@ const Posts = () => {
   const [error, setError] = useState(null);
   const [likedPosts, setLikedPosts] = useState({});
   const [userData, setUserData] = useState({
-    profileImage: '/uploads/profiles/profile.jpg', // Set default image initially
+    profileImage:'/uploads/profiles/profile.jpg', // Set default image initially
     username: '',
     description: '',
     email: '',
@@ -124,7 +124,6 @@ const Posts = () => {
   };
 
   const handleChat = async (userId, postId) => {
-
     try {
       // Step 1: Get or create a conversation for the given post
       const conversationResponse = await axios.get(`http://localhost:5000/api/chat/conversation/${postId}`);
@@ -132,19 +131,16 @@ const Posts = () => {
   
       // Step 2: Navigate to the chat page with the user ID
       navigate(`/chat/${userId}`);
-      console.log(userId)
     } catch (err) {
       console.error('Error handling chat:', err);
     }
   };
 
+  // New function to handle location click
   const handleLocationClick = (location) => {
-    if (location) {
-      const encodedLocation = encodeURIComponent(location);
-      window.open(`https://www.google.com/maps/search/?api=1&query=${encodedLocation}`, '_blank');
-    } else {
-      console.error('Location is not available');
-    }
+    const query = encodeURIComponent(location); // Encode the location string
+    const googleMapsUrl = `https://www.google.com/maps/search/?api=1&query=${query}`;
+    window.open(googleMapsUrl, '_blank'); // Open in a new tab
   };
 
   const Post = ({ _id, postType, user, text, photos, videos, location, backgroundColor, likes, caption }) => {
@@ -163,6 +159,7 @@ const Posts = () => {
             {photos.map((item, index) => (
               <img key={index} src={`http://localhost:5000/${item}`} alt={`Post Media ${index}`} className="media-image" />
             ))}
+
           </div>
         )}
         {videos.map((video, index) => (
@@ -177,16 +174,16 @@ const Posts = () => {
     return (
       <div className="post">
         <div className="post-header">
-          <img
-            src={getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
-            alt="Profile"
-            className="user-profile"
-          />
-          <div className="user-info">
+        <img
+          src={ getProfileImageUrl() || '/uploads/profiles/profile.jpg'}
+          alt="Profile"
+          className="user-profile"
+        />          
+        <div className="user-info">
             <span className="user-name">{userName}</span>
           </div>
           {location && (
-            <div className="post-location" onClick={() => handleLocationClick(location)}>
+            <div className="post-location" onClick={() => handleLocationClick(location)}> {/* Add onClick handler */}
               <FontAwesomeIcon icon={faMapMarkerAlt} className="location-icon" />
               <span className="location-name">{location}</span>
               <FontAwesomeIcon icon={faUserPlus} className="follow-icon" />
@@ -235,12 +232,12 @@ const Posts = () => {
           postType={post.postType}
           user={post.user}
           text={post.text}
-          photos={post.photos}
-          videos={post.videos}
+          photos={post.photos || []}
+          videos={post.videos || []}
           location={post.location}
           backgroundColor={post.backgroundColor}
-          caption={post.caption}
           likes={post.likes}
+          caption={post.caption} 
         />
       ))}
     </div>

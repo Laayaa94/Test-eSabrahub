@@ -85,6 +85,7 @@
   .chat-form{
     display: flex;
     flex-direction: row;
+    background-color: transparent;
   }
   .chat-form input{
     width: 90%;

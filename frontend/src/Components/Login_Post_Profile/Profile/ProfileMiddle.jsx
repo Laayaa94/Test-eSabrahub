@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from 'react';
 import axios from 'axios';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import {toast} from 'react-toastify'
 import { faComment, faMessage, faMapMarkerAlt, faTrash, faEdit, faHeart } from '@fortawesome/free-solid-svg-icons';
 import { useAuth } from '../../../Context/AuthContext';
 import UpdatePost from '../../../Components/PostsPageCompo/UpdatePost/UpdatePost';
@@ -135,6 +136,7 @@ const ProfileMiddle = () => {
         headers: { Authorization: `Bearer ${authState.token}` }
       });
       setPosts(prevPosts => prevPosts.filter(post => post._id !== postId));
+      toast.success("Post Deleted")
     } catch (err) {
       console.error('Error deleting post:', err);
     }

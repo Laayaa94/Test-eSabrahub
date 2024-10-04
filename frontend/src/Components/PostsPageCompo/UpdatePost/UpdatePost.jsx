@@ -4,6 +4,7 @@ import { faCamera, faVideo, faMapMarkerAlt } from '@fortawesome/free-solid-svg-i
 import EmojiPicker from 'emoji-picker-react';
 import { useAuth } from '../../../Context/AuthContext';
 import axios from 'axios';
+import {toast} from 'react-toastify'
 import './UpdatePost.css';
 import LocationInput from '../../Map/LocationInput';
 
@@ -116,15 +117,17 @@ const UpdatePost = ({ post, onClose, onSave = () => {} }) => {
       });
   
       if (response.status === 200) {
-        alert('Post updated successfully!');
+        toast.success("Post updated successfully!")
+        
         onSave(); // Notify parent component, default to no-op
       } else {
         console.error('Unexpected response:', response);
         alert('Error updating post. Please try again.');
+        toast.error("Error updating post. Please try again")
       }
     } catch (error) {
       console.error('Error updating post:', error);
-      alert(`Error updating post: ${error.response?.data?.message || error.message || 'Please try again.'}`);
+      toast.error("Error Updating")
     }
   };
   const handleLocationSelect = (location) => {

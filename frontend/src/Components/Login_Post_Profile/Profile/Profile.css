@@ -16,6 +16,7 @@
   z-index: 1001;
 }
 
+
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -138,6 +139,9 @@ form {
   display: flex;
   flex-direction: column;
   width: 100%;
+  background-color: white;
+  margin-right: 40px;
+  padding: 20px;
 }
 
 form input {
@@ -153,6 +157,8 @@ form button {
   background-color: #dd7413;
   color: white;
   border: none;
+  width: 200px;
+  margin: 0 auto;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
