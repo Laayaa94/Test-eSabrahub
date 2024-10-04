@@ -61,12 +61,14 @@
   
   .create-post-button {
     padding: 10px 15px;
-    background-color: #dd7413;
+    background-color: #141413; 
+    margin: 0 auto;
+    width: 200px;
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 14px;
     transition: background-color 0.3s;
   }
   

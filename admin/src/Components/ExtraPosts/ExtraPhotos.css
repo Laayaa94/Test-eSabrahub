@@ -1,5 +1,8 @@
 /* General styling for the ExtraPhotos component */
 .extra-photos-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     max-width: 700px;
     margin: 0 auto;
     padding: 20px;
@@ -13,6 +16,7 @@
     text-align: center;
     color: #dd7413; /* Title color */
     margin-bottom: 20px;
+    font-size: 14px;
 }
 
 /* Form styling */
@@ -50,18 +54,20 @@
 /* Button styling */
 .extra-photos-form button {
     padding: 10px 15px;
-    background-color: #dd7413; 
+    background-color: #141413; 
+    width: 200px;
     color: white; 
     border: none;
     border-radius: 5px; 
     cursor: pointer; 
-    font-size: 1em;
+    font-size: 14px;
     transition: background-color 0.3s; 
 }
 
 /* Button hover effect */
 .extra-photos-form button:hover {
-    background-color: #45a049; 
+    background-color: #dd7513c2; 
+    color: #f9f9f9;
     
 }
 

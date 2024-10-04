@@ -57,36 +57,7 @@ tbody tr:hover {
   background-color: #dd751392;
 }
 
-/* Table column specific widths */
-.servicesTable th:nth-child(1),
-.servicesTable td:nth-child(1) {
-  width: 100px; 
-}
 
-.servicesTable th:nth-child(2),
-.servicesTable td:nth-child(2) {
-  width: 100px; /* Extra Images column */
-}
-
-.servicesTable th:nth-child(3),
-.servicesTable td:nth-child(3) {
-  width: 150px; /* Name column */
-}
-
-.servicesTable th:nth-child(4),
-.servicesTable td:nth-child(4) {
-  width: 150px; /* Location column */
-}
-
-.servicesTable th:nth-child(5),
-.servicesTable td:nth-child(5) {
-  width: 350px; /* Description column */
-}
-
-.servicesTable th:nth-child(6),
-.servicesTable td:nth-child(6) {
-  width: 100px; /* Actions column */
-}
 
 /* Add scrollbar to extra images if necessary */
 .extraPhotosContainer {

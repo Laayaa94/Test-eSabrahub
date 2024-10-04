@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import ExtraPosts from '../ExtraPosts/ExtraPosts';
-import LocationInput from '../Map/LocationInput'; // Import the new LocationInput component
+import LocationInput from '../Map/LocationInput'; 
 import './CreatePost.css';
 import camera from '../../Assets/cam.webp';
+import { toast } from 'react-toastify';
 
 const serviceTypes = [
     'accommodation',
@@ -47,7 +48,7 @@ const CreatePost = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = new FormData();
-
+    
         data.append('name', formData.name);
         data.append('location', formData.location);
         data.append('description', formData.description);
@@ -56,25 +57,42 @@ const CreatePost = () => {
         if (mainPhoto) {
             data.append('mainPhoto', mainPhoto);
         }
-
+    
         try {
             const response = await axios.post('http://localhost:5000/api/service/create', data, {
                 headers: { 'Content-Type': 'multipart/form-data' }
             });
-
+    
             const { service } = response.data;
             if (service && service._id) {
                 setServiceDetails(service);
                 setShowExtraPhotosForm(true);
-                alert('Service created successfully!');
+                
+                // Show success toast instead of alert
+                toast.success('Service created successfully!');
             } else {
-                alert('Error creating service. Please try again.');
+                // Show error toast instead of alert
+                toast.error('Error creating service. Please try again.');
             }
+           
         } catch (error) {
             console.error('Error creating service:', error);
-            alert('Error creating service. Please try again.');
+    
+            // Show error toast for any exceptions
+            toast.error('Error creating service. Please try again.');
+        }
+        finally{
+            setFormData({
+                name: '',
+                location: '',
+                description: '',
+                serviceType: ''}
+                
+        )
+        setMainPhotoUrl(camera)
         }
     };
+    
 
     return (
         <div className="create-post-container">

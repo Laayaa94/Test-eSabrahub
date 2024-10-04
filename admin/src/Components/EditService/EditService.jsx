@@ -3,6 +3,7 @@ import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
 import './EditService.css';
 import LocationInput from '../Map/LocationInput';
+import { toast } from 'react-toastify';
 
 const EditService = () => {
   const { id } = useParams(); 
@@ -66,7 +67,7 @@ const EditService = () => {
       await axios.put(`http://localhost:5000/api/service/${id}`, formData, {
         headers: { 'Content-Type': 'multipart/form-data' }
       });
-      alert('Service updated successfully');
+      toast.success("Services updated successfully")
       
       if (extraFiles.length > 0) {
         const extraPhotosData = new FormData();
@@ -79,7 +80,7 @@ const EditService = () => {
         await axios.put(`http://localhost:5000/api/extraphotos/${id}`, extraPhotosData, {
           headers: { 'Content-Type': 'multipart/form-data' }
         });
-        alert('Extra photos updated successfully');
+        toast.success("Photos Updated Successfully")
       }
       
       switch (service.serviceType) {
@@ -104,7 +105,7 @@ const EditService = () => {
       }
     } catch (error) {
       console.error('Error updating service:', error.response ? error.response.data : error);
-      alert('Error updating service');
+      toast.error(error)
     }
 };
 

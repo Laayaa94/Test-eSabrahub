@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import './ExtraPhotos.css'; // Make sure to import your CSS file
+import { toast } from 'react-toastify'; // Import toast for notifications
+import './ExtraPhotos.css'; // Import your CSS file
 
 const ExtraPhotos = ({ serviceId }) => {
     const [files, setFiles] = useState([]);
-    const [message, setMessage] = useState('');
-    const [error, setError] = useState('');
 
     const handleFileChange = (event) => {
         setFiles(event.target.files);
@@ -15,8 +14,7 @@ const ExtraPhotos = ({ serviceId }) => {
         event.preventDefault();
 
         if (files.length === 0) {
-            setMessage('');
-            setError('Please select files to upload.');
+            toast.warning('Please select files to upload.'); // Show error toast for no files
             return;
         }
 
@@ -32,8 +30,8 @@ const ExtraPhotos = ({ serviceId }) => {
                 }
             });
 
-            setMessage(response.data.message);
-            setError('');
+            // If the upload is successful, show a success message
+            toast.success("Post Created Successfully"); // Show success toast
 
             // Clear form fields after successful upload
             setFiles([]);
@@ -41,8 +39,10 @@ const ExtraPhotos = ({ serviceId }) => {
 
         } catch (err) {
             console.error('Error uploading files:', err);
-            setMessage('');
-            setError(err.response?.data?.message || 'An unexpected error occurred');
+
+            // Show error toast if there's an issue
+            const errorMessage = err.response?.data?.message || 'An unexpected error occurred'; 
+            toast.error(errorMessage); // Show error toast with the error message
         }
     };
 
@@ -64,7 +64,7 @@ const ExtraPhotos = ({ serviceId }) => {
 
     return (
         <div className="extra-photos-container">
-            <h2>Upload Extra Photos</h2>
+            <h2>If you have extra photos to add. you can add</h2>
             <form className="extra-photos-form" onSubmit={handleSubmit}>
                 <label className="custom-file-upload">
                     <input
@@ -72,7 +72,7 @@ const ExtraPhotos = ({ serviceId }) => {
                         multiple
                         onChange={handleFileChange}
                     />
-                    <span className="upload-icon" /> {/* You can replace this with an actual image or icon */}
+                    <span className="upload-icon" /> {/* Replace this with an actual image or icon if needed */}
                     <p>Select Images</p>
                 </label>
                 
@@ -83,8 +83,6 @@ const ExtraPhotos = ({ serviceId }) => {
 
                 <button type="submit">Upload</button>
             </form>
-            {message && <p className="extra-photos-message">{message}</p>}
-            {error && <p className="extra-photos-error">{error}</p>}
         </div>
     );
 };

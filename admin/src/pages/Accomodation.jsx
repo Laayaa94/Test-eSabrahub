@@ -5,6 +5,7 @@ import { faTrash, faEdit } from '@fortawesome/free-solid-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import './ServicesAdmin.css'; // Import CSS file
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 function Accommodation() {
     const [services, setServices] = useState([]);
@@ -31,9 +32,11 @@ function Accommodation() {
         try {
             await deleteService(id);
             setServices((prevServices) => prevServices.filter(service => service._id !== id));
+            toast.success("Deleted Succussfully")
         } catch (error) {
             console.error('Error deleting service:', error);
             setError('Failed to delete service. Please try again.');
+            toast.error('Failed to delete service. Please try again.')
         }
     };
 

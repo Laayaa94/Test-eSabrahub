@@ -56,12 +56,14 @@
 
 .edit-service-button {
     padding: 10px 15px;
-    background-color: #dd7413;
+    background-color: #141413; 
     color: white;
     border: none;
+    width: 200px;
+    margin: 0 auto;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 1em;
+    font-size: 14px;
     transition: background-color 0.3s;
 }
 
