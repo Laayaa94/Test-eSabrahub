@@ -12,7 +12,8 @@ const contactRoutes = require('./Routes/ContactRoutes');
 const postRoutes = require('./Routes/PostRoutes');
 const serviceRoute = require('./Routes/ServiceRoutes');
 const serviceExtraPhotosRoute = require('./Routes/ServiceExtraPhotosRoute'); 
-const ChatRoutes=require('./Routes/ChatRoutes')
+const ChatRoutes=require('./Routes/ChatRoutes');
+const { hash } = require('crypto');
 dotenv.config();
 
 const app = express();
@@ -51,6 +52,8 @@ const ensureUploadDirsExist = () => {
       fs.mkdirSync(dir, { recursive: true });
     }
   });
+
+
 };
 
 ensureUploadDirsExist();
